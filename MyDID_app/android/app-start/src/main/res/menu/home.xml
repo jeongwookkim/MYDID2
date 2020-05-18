@@ -19,12 +19,12 @@
 
     <item
         android:id="@+id/action_reauth"
-        android:title="@string/reauth"
+        android:title="재등록"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/action_sign_out"
-        android:title="@string/sign_out"
+        android:title="로그아웃"
         app:showAsAction="ifRoom" />
 
 </menu>
