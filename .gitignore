@@ -14,6 +14,12 @@ lerna-debug.log*
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
+# history
+.history
+
+# image upload folder
+**/public/upload/
+
 # Runtime data
 pids
 *.pid
