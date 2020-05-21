@@ -3,6 +3,7 @@ const router = express.Router();
 const multer = require("multer");
 const path = require("path");
 const Board = require("../schemas/board");
+const Comment = require("../schemas/comment");
 
 let storage = multer.diskStorage({
   destination: function (req, file, callback) {
@@ -114,15 +115,51 @@ router.post("/getBoardList", async (req, res) => {
   }
 });
 
-router.post("/detail", async (req, res) => {
+router.post("/writecomment", async (req, res) => {
   try {
     const _id = req.body._id;
-    const board = await Board.find({ _id });
-    res.json({ board });
+    /* const comment = await Comment.find(
+      ); */
+      console.log(req.body);
+      let obj;
+
+    if (req.body !== undefined) {
+      obj = {
+        writer: req.body._id,
+        comment: req.body._comment,
+      };
+      console.log(obj);
+    } else {
+     
+    }
+
+
+    const comment = new Comment(obj);
+    await comment.save();
+    res.json({ message: "댓글이 작성되었습니다." });
   } catch (err) {
     console.log(err);
     res.json({ message: false });
   }
 });
+
+
+
+router.post("/detail", async (req, res) => {
+  try {
+    const _id = req.body._id;
+    const board = await Board.find({ _id });
+    const comment = await Comment.find(
+    
+      );
+    res.json({ board, list: comment});
+    
+  } catch (err) {
+    console.log(err);
+    res.json({ message: false });
+  }
+});
+
+
 
 module.exports = router;
