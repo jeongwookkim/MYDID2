@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { Table, Button, Image ,Form } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import axios from "axios";
@@ -6,7 +6,6 @@ import $ from "jquery";
 import {} from "jquery.cookie";
 axios.defaults.withCredentials = true;
 const headers = { withCredentials: true };
-var flag = true;
 
 function CommentRow(props){
   return (
@@ -19,60 +18,15 @@ function CommentRow(props){
 
 function BoardDetail(props){
   const boardTitle = useRef();
-  const [board, setBoard] = useState();
+  const [board, setBoard] = useState([]);
   const [commentList, setCommentList] = useState();
+  const [flag, setFlag] = useState(true);
 
-  useEffect(()=>{
-    setBoardDetail();
-    flag=false;
-  },[flag]);
-
-  const setBoardDetail=()=>{
-    if (props.location.query !== undefined) {
-      getDetail();
-      // getCommentList();
-    } else {
-      window.location.href = "/";
-    }
+  const divStyle = {
+    margin: 50
   };
 
-  const deleteBoard = _id => {
-    const send_param = {
-      headers,
-      _id
-    };
-    if (window.confirm("정말 삭제하시겠습니까?")) {
-      axios
-        .post("http://localhost:8080/board/delete", send_param)
-        //정상 수행
-        .then(returnData => {
-          alert("게시글이 삭제 되었습니다.");
-          window.location.href = "/";
-        })
-        //에러
-        .catch(err => {
-          console.log(err);
-          alert("글 삭제 실패");
-        });
-    }
-  };
-
-  const writeComment = () => {
-    let url;
-    const formData = new FormData();
-    const send_param = {
-      headers,
-      _id: props.location.query._id,
-      _comment: boardTitle.current.value
-      
-    };
-    axios
-      .post("http://localhost:8080/board/writecomment", send_param)
-
-      getCommentList();
-  }
-
-  const getCommentList = () => {
+  const getCommentList = useCallback(() => {
     console.log(commentList);
     axios
       .post("http://localhost:8080/board/detail","")
@@ -102,9 +56,24 @@ function BoardDetail(props){
       });
       console.log('hi2')
 
-  };
+  },[commentList]);
 
-  const getDetail = () => {
+  const writeComment = useCallback(() => {
+    let url;
+    const formData = new FormData();
+    const send_param = {
+      headers,
+      _id: props.location.query._id,
+      _comment: boardTitle.current.value
+      
+    };
+    axios
+      .post("http://localhost:8080/board/writecomment", send_param)
+
+      getCommentList();
+  },[props.location.query, getCommentList]);
+
+  const getDetail = useCallback(() => {
     const send_param = {
       headers,
       _id: props.location.query._id
@@ -180,10 +149,7 @@ function BoardDetail(props){
                 >
                   글 삭제
                 </Button>
-               
                <br></br>
-
-
                       <Form.Control
                 type="text"
                 style={titleStyle}
@@ -214,6 +180,7 @@ function BoardDetail(props){
             </div>
           );
           setBoard(board);
+          setFlag(false);
         } else {
           alert("글 상세 조회 실패");
         }
@@ -223,13 +190,47 @@ function BoardDetail(props){
         console.log(err);
       });
       
-  };
+  },[divStyle, props.location.query, commentList, writeComment]);
 
-  //onClick={this.getBoard.bind(null,this.props._id)}
-    const divStyle = {
-      margin: 50
+
+  const setBoardDetail = useCallback(() => {
+    if (props.location.query !== undefined) {
+      getDetail();
+    } else {
+      window.location.href = "/";
+    }
+  }, [props.location.query, getDetail]);
+
+  useEffect(()=>{
+    if(flag){
+      console.log("flag=" + flag );
+      setBoardDetail();
+    }
+
+  },[flag, setBoardDetail]);
+
+  const deleteBoard = _id => {
+    const send_param = {
+      headers,
+      _id
     };
-    return <div style={divStyle}>{board}</div>;
+    if (window.confirm("정말 삭제하시겠습니까?")) {
+      axios
+        .post("http://localhost:8080/board/delete", send_param)
+        //정상 수행
+        .then(returnData => {
+          alert("게시글이 삭제 되었습니다.");
+          window.location.href = "/";
+        })
+        //에러
+        .catch(err => {
+          console.log(err);
+          alert("글 삭제 실패");
+        });
+    }
+  };
+  
+  return <div style={divStyle}>{board}</div>;
   
 }
 
