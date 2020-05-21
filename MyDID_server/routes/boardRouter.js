@@ -102,9 +102,11 @@ router.post("/write", upload.single("imgFile"), async (req, res) => {
 router.post("/getBoardList", async (req, res) => {
   try {
     const _id = req.body._id;
-    const board = await Board.find({ writer: _id }, null, {
+    const board = await Board.find(
+      /* { writer: _id }, null, {
       sort: { createdAt: -1 },
-    });
+    } */
+    );
     res.json({ list: board });
   } catch (err) {
     console.log(err);
