@@ -25,7 +25,7 @@ function LoginForm(){
   };
 
   const join = () => {
-    const regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+    /* const regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
     const regExp2 = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,16}$/;
     if (joinEmail.current.value === "" || joinEmail.current.value === undefined) {
       alert("이메일 주소를 입력해주세요.");
@@ -55,7 +55,7 @@ function LoginForm(){
       joinPw.current.value = "";
       joinPw.current.focus();
       return;
-    }
+    } */
 
     const send_param = {
       headers,
