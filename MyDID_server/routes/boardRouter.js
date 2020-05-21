@@ -105,7 +105,7 @@ router.post("/getBoardList", async (req, res) => {
     const board = await Board.find(
       /* { writer: _id }, null, {
       sort: { createdAt: -1 },
-    } */
+    } */ 
     );
     res.json({ list: board });
   } catch (err) {
