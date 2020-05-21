@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useCallback } from "react";
 import { Button, Form } from "react-bootstrap";
 import axios from "axios";
 import $ from "jquery";
@@ -11,18 +11,19 @@ function BoardWriteForm(props){
   const boardTitle = useRef();
   const boardContent = useRef();
 
-  useEffect(()=>{
-    setContentData();
-  },[]);
-
-  const setContentData = () =>{
+  const setContentDataCallback = useCallback(() => {
     if (props.location.query !== undefined) {
       boardTitle.current.value = props.location.query.title;
       boardContent.current.value = props.location.query.content;
       // setData(props.location.query.content);
-      
     }
-  }
+  }, [props.location.query]);
+
+  useEffect(()=>{
+    setContentDataCallback();
+  },[setContentDataCallback]);
+
+
 
   const writeBoard = () => {
     let url;
