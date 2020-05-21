@@ -6,24 +6,13 @@ import $ from "jquery";
 import {} from "jquery.cookie";
 axios.defaults.withCredentials = true;
 const headers = { withCredentials: true };
-var update = true;
+var flag = true;
+
 function CommentRow(props){
   return (
     <tr>
-      <td>
-        <NavLink
-          to={{ pathname: "/board/detail", query: { _id: props._id } }}
-        >
-          {props.createdAt.substring(0, 10)}asdf
-        </NavLink>
-      </td>
-      <td>
-        <NavLink
-          to={{ pathname: "/board/detail", query: { _id: props._id } }}
-        >
-          {props.title}asdf
-        </NavLink>
-      </td>
+      <td>{props.createdAt}</td>
+      <td>{props.comment}</td>
     </tr>
   );
 }
@@ -32,12 +21,11 @@ function BoardDetail(props){
   const boardTitle = useRef();
   const [board, setBoard] = useState();
   const [commentList, setCommentList] = useState();
-  const [cmt, setCmt] = useState();
 
   useEffect(()=>{
     setBoardDetail();
-    update=false;
-  },[]);
+    flag=false;
+  },[flag]);
 
   const setBoardDetail=()=>{
     if (props.location.query !== undefined) {
@@ -70,7 +58,6 @@ function BoardDetail(props){
   };
 
   const writeComment = () => {
-    update = true;
     let url;
     const formData = new FormData();
     const send_param = {
@@ -79,13 +66,13 @@ function BoardDetail(props){
       _comment: boardTitle.current.value
       
     };
-
     axios
       .post("http://localhost:8080/board/writecomment", send_param)
+
+      getCommentList();
   }
 
   const getCommentList = () => {
-    console.log(cmt);
     console.log(commentList);
     axios
       .post("http://localhost:8080/board/detail","")
@@ -152,8 +139,6 @@ function BoardDetail(props){
             console.log(setCommentList(commentContents));
             setCommentList(commentContents);
             console.log('commentList:'+commentList);
-            setCmt("ddddd");
-            console.log('cmt:'  +cmt);
           }
 
           const board = (
@@ -237,6 +222,7 @@ function BoardDetail(props){
       .catch(err => {
         console.log(err);
       });
+      
   };
 
   //onClick={this.getBoard.bind(null,this.props._id)}
