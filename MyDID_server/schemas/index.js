@@ -1,4 +1,6 @@
+require('dotenv').config();
 const mongoose = require("mongoose");
+
 
 module.exports = () => {
   const connect = () => {
@@ -6,7 +8,8 @@ module.exports = () => {
       mongoose.set("debug", true);
     }
     mongoose.connect(
-      "mongodb://localhost:27017/til",
+      process.env.MONGO_URL
+     ,
       {
         dbName: "til"
       },

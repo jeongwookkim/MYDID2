@@ -5,6 +5,11 @@ const session = require("express-session");
 const fs = require("fs");
 const path = require("path");
 const connect = require("./schemas");
+const dotenv = require("dotenv");
+
+dotenv.config();
+
+const PORT = process.env.PORT || 8080;
 
 connect();
 
