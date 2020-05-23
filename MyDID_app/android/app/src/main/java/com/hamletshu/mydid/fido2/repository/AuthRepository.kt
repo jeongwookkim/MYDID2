@@ -266,6 +266,7 @@ class AuthRepository(
     /**
      * Finishes registering a new credential to the server. This should only be called after
      * a call to [registerRequest] and a local FIDO2 API for public key generation.
+     * FIDO2 API 사용하여 public key 생성 후 서버에 키 쌍의 공개키 전송
      */
     fun registerResponse(data: Intent, processing: MutableLiveData<Boolean>) {
         executor.execute {

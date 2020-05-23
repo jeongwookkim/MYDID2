@@ -69,6 +69,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when (requestCode) {
+            //등록
             REQUEST_FIDO2_REGISTER -> {
                 val errorExtra = data?.getByteArrayExtra(Fido.FIDO2_KEY_ERROR_EXTRA)
                 if (errorExtra != null) {
@@ -80,12 +81,14 @@ class MainActivity : AppCompatActivity() {
                 } else if (resultCode != RESULT_OK) {
                     Toast.makeText(this, R.string.cancelled, Toast.LENGTH_SHORT).show()
                 } else {
+                    //화면 변경
                     val fragment = supportFragmentManager.findFragmentById(R.id.container)
                     if (data != null && fragment is HomeFragment) {
                         fragment.handleRegister(data)
                     }
                 }
             }
+            //가입
             REQUEST_FIDO2_SIGNIN -> {
                 val errorExtra = data?.getByteArrayExtra(Fido.FIDO2_KEY_ERROR_EXTRA)
                 if (errorExtra != null) {
@@ -97,6 +100,7 @@ class MainActivity : AppCompatActivity() {
                 } else if (resultCode != RESULT_OK) {
                     Toast.makeText(this, R.string.cancelled, Toast.LENGTH_SHORT).show()
                 } else {
+                    //화면 변경
                     val fragment = supportFragmentManager.findFragmentById(R.id.container)
                     if (data != null && fragment is AuthFragment) {
                         fragment.handleSignin(data)

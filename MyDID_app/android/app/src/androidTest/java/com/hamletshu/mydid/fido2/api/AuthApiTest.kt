@@ -19,6 +19,7 @@ package com.hamletshu.mydid.fido2.api
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import com.google.common.truth.Truth.assertThat
+import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -46,7 +47,7 @@ class AuthApiTest {
         val token = api.password("wa", "o")
         val credentials = api.getKeys(token)
         assertThat(credentials).isEmpty()
-        assertThat(api.getKeys(api.password("agektmr", "ajfda"))).isNotEmpty()
+        assertThat(api.getKeys(api.password("wa", "o"))).isNotEmpty()
     }
 
     @Test
