@@ -61,6 +61,7 @@ class AuthApi {
         .build()
 
     /**
+     * ID를 서버에 보내서 찾는 듯, 없으면 생성해서 보내주던지 하는듯...
      * @param username The username to be used for sign-in.
      * @return The username.
      */
@@ -78,10 +79,12 @@ class AuthApi {
             throwResponseError(response, "Error calling /username")
         }
 
+        //쿠키 세팅
         return parseUsername(findSetCookieInResponse(response, "username"))
     }
 
     /**
+     * ID, PW 모두를 파라미터로 넘겨서 로그인이 되었다고 쿠키에 기록
      * @param username The username sent to the server with `username()`.
      * @param password A password.
      * @return token The sign-in token to be used for subsequent API calls.
@@ -471,6 +474,7 @@ class AuthApi {
         return cookie.substring(start + 9, end)
     }
 
+    // 사용자 인증정보 파싱
     private fun parseUserCredentials(body: ResponseBody): List<Credential> {
         fun readCredentials(reader: JsonReader): List<Credential> {
             val credentials = mutableListOf<Credential>()
