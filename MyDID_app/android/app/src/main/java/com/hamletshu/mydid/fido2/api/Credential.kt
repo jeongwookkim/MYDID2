@@ -17,7 +17,8 @@
 package com.hamletshu.mydid.fido2.api
 
 /**
- * A credential registered on the server.
+ * 서버에 등록 된 자격 증명.
+  * A credential registered on the server.
  */
 data class Credential(
     val id: String,
