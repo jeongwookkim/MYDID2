@@ -22,11 +22,14 @@ package com.hamletshu.mydid.fido2.repository
 sealed class SignInState {
 
     /**
+     * 사용자가 로그아웃 했습니다.
      * The user is signed out.
      */
     object SignedOut : SignInState()
 
     /**
+     * 사용자가 로그인 중입니다. 사용자가 사용자 이름을 입력했으며 로그인 할 준비가되었습니다.
+     * 비밀번호 또는 FIDO2.
      * The user is signing in. The user has entered the username and is ready to sign in with
      * password or FIDO2.
      */
@@ -35,6 +38,7 @@ sealed class SignInState {
     ) : SignInState()
 
     /**
+     * 사용자 로그인에 실패했습니다.
      * The user sign-in failed.
      */
     data class SignInError(
@@ -42,6 +46,7 @@ sealed class SignInState {
     ) : SignInState()
 
     /**
+     * 사용자가 로그인했습니다.
      * The user is signed in.
      */
     data class SignedIn(

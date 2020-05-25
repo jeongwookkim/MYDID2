@@ -44,7 +44,8 @@ import java.io.StringWriter
 import java.util.concurrent.TimeUnit
 
 /**
- * Interacts with the server API.
+ * 서버 API와 상호 작용합니다.
+ Interacts with the server API.
  */
 class AuthApi {
 
@@ -61,8 +62,8 @@ class AuthApi {
         .build()
 
     /**
-     * ID를 서버에 보내서 찾는 듯, 없으면 생성해서 보내주던지 하는듯...
-     * @param username The username to be used for sign-in.
+     * @param username 로그인에 사용되는 사용자 이름입니다.
+    * @param username The username to be used for sign-in.
      * @return The username.
      */
     fun username(username: String): String {
@@ -85,7 +86,10 @@ class AuthApi {
 
     /**
      * ID, PW 모두를 파라미터로 넘겨서 로그인이 되었다고 쿠키에 기록
-     * @param username The username sent to the server with `username()`.
+     * @param username`username ()`으로 서버에 전송된 사용자 이름입니다.
+     * @param password 비밀번호입니다.
+     * @return token 후속 API 호출에 사용되는 로그인 토큰입니다.
+          * @param username The username sent to the server with `username()`.
      * @param password A password.
      * @return token The sign-in token to be used for subsequent API calls.
      */
@@ -108,7 +112,9 @@ class AuthApi {
     }
 
     /**
-     * @param token The sign-in token.
+     * @param token 로그인 토큰.
+     * @return 서버에 등록 된 모든 자격 증명 목록입니다.
+          * @param token The sign-in token.
      * @return A list of all the credentials registered on the server.
      */
     fun getKeys(token: String): List<Credential> {
@@ -128,7 +134,11 @@ class AuthApi {
     }
 
     /**
-     * @param token The sign-in token.
+     * @param token 로그인 토큰.
+     * @return A 쌍. `first` 요소는 [PublicKeyCredentialCreationOptions]이며
+     * 후속 FIDO2 API 호출에 사용됩니다. `second` 요소는 챌린지 문자열이며
+     * [registerResponse]에서 서버로 다시 전송됩니다.
+          * @param token The sign-in token.
      * @return A pair. The `first` element is an [PublicKeyCredentialCreationOptions] that can be
      * used for a subsequent FIDO2 API call. The `second` element is a challenge string that should
      * be sent back to the server in [registerResponse].
@@ -156,7 +166,12 @@ class AuthApi {
     }
 
     /**
-     * @param token The sign-in token.
+     * @param token 로그인 토큰.
+     * @param challenge [registerRequest]에서 반환 한 챌린지 문자열입니다.
+     * @param response FIDO2 응답 개체입니다.
+     * @return 새로 등록한 서버를 포함하여 서버에 등록 된 모든 자격 증명 목록
+     * 등록 된 것.
+          * @param token The sign-in token.
      * @param challenge The challenge string returned by [registerRequest].
      * @param response The FIDO2 response object.
      * @return A list of all the credentials registered on the server, including the newly
@@ -198,7 +213,9 @@ class AuthApi {
     }
 
     /**
-     * @param token The sign-in token.
+     * @param token 로그인 토큰.
+     * @param credentialId 제거 할 자격 증명 ID입니다.
+          * @param token The sign-in token.
      * @param credentialId The credential ID to be removed.
      */
     fun removeKey(token: String, credentialId: String) {
@@ -217,7 +234,12 @@ class AuthApi {
     }
 
     /**
-     * @param username The username to be used for the sign-in.
+     * @param username 로그인에 사용할 사용자 이름입니다.
+     * @param credentialId이 장치의 자격 증명 ID.
+     * @return A 쌍. 'first'요소는 사용할 수있는 [PublicKeyCredentialRequestOptions]입니다.
+     * 후속 FIDO2 API 호출의 경우 `second` 요소는 챌린지 문자열이며
+     * [signinResponse]에서 서버로 다시 전송됩니다.
+          * @param username The username to be used for the sign-in.
      * @param credentialId The credential ID of this device.
      * @return A pair. The `first` element is a [PublicKeyCredentialRequestOptions] that can be used
      * for a subsequent FIDO2 API call. The `second` element is a challenge string that should
@@ -250,7 +272,10 @@ class AuthApi {
     }
 
     /**
-     * @param username The username to be used for this sign-in.
+     * @param username이 로그인에 사용될 사용자 이름입니다.
+     * @param challenge [signinRequest]에서 반환 한 challenge 문자열입니다.
+     * @param response FIDO2 API의 응답.
+          * @param username The username to be used for this sign-in.
      * @param challenge The challenge string returned by [signinRequest].
      * @param response The assertion response from FIDO2 API.
      */
@@ -554,7 +579,8 @@ class AuthApi {
     }
 
     /*
-     * Looks for a set-cookie header with a particular name
+    * 특정 이름의 쿠키 헤더를 찾습니다.
+    * Looks for a set-cookie header with a particular name
      */
     private fun findSetCookieInResponse(response: Response, cname: String): String {
         for (header in response.headers("set-cookie")) {

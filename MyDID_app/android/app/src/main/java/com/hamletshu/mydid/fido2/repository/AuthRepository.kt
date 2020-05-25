@@ -40,7 +40,8 @@ import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 
 /**
- * Works with the API, the local data store, and FIDO2 API.
+ * API, 로컬 데이터 저장소 및 FIDO2 API와 함께 작동합니다.
+  * Works with the API, the local data store, and FIDO2 API.
  */
 class AuthRepository(
     private val api: AuthApi,
@@ -80,7 +81,9 @@ class AuthRepository(
     private val signInStateListeners = mutableListOf<(SignInState) -> Unit>()
 
     /**
-     * Stores a temporary challenge that needs to be memorized between request and response API
+     * 요청과 응답 API 사이에 기억해야 할 일시적인 challenge를 저장합니다
+     * 자격 증명 등록 및 로그인을 요청합니다.
+          * Stores a temporary challenge that needs to be memorized between request and response API
      * calls for credential registration and sign-in.
      */
     private var lastKnownChallenge: String? = null
@@ -93,6 +96,7 @@ class AuthRepository(
     }
 
     /**
+     * 사용자의 현재 로그인 상태를 반환합니다. UI는 이를 사용하여 화면을 탐색합니다.
      * Returns the current sign-in state of the user. The UI uses this to navigate between screens.
      */
     fun getSignInState(): LiveData<SignInState> {
@@ -123,6 +127,7 @@ class AuthRepository(
     }
 
     /**
+     * * 사용자 이름을 서버로 보냅니다. 성공하면 로그인 상태가 진행됩니다.
      * Sends the username to the server. If it succeeds, the sign-in state will proceed to
      * [SignInState.SigningIn].
      */
@@ -142,10 +147,14 @@ class AuthRepository(
     }
 
     /**
+     *
+     * 비밀번호로 로그인하십시오. 로그인 상태가 다음과 같은 경우에만 호출해야합니다.
+     * [SignInState.SigningIn]. 성공하면 로그인 상태가 진행됩니다.
      * Signs in with a password. This should be called only when the sign-in state is
      * [SignInState.SigningIn]. If it succeeds, the sign-in state will proceed to
      * [SignInState.SignedIn].
      *
+     * @param processing API 호출이 진행되는 동안이 값은 'true'로 설정됩니다.
      * @param processing The value is set to `true` while the API call is ongoing.
      */
     fun password(password: String, processing: MutableLiveData<Boolean>) {
@@ -175,6 +184,8 @@ class AuthRepository(
     }
 
     /**
+     *이 사용자가 서버에 등록한 자격 증명 목록을 검색합니다. 이것은
+     * 로그인 상태가 [SignInState.SignedIn] 인 경우에만 호출됩니다.
      * Retrieves the list of credential this user has registered on the server. This should be
      * called only when the sign-in state is [SignInState.SignedIn].
      */
@@ -210,6 +221,7 @@ class AuthRepository(
     }
 
     /**
+     * 로그인 토큰을 지웁니다. 로그인 상태는 [SignInState.SigningIn]으로 진행됩니다.
      * Clears the sign-in token. The sign-in state will proceed to [SignInState.SigningIn].
      */
     fun clearToken() {
@@ -224,6 +236,7 @@ class AuthRepository(
     }
 
     /**
+     * 모든 로그인 정보를 지 웁니다. 로그인 상태는 [SignInState.SignedOut].
      * Clears all the sign-in information. The sign-in state will proceed to
      * [SignInState.SignedOut].
      */
@@ -239,6 +252,8 @@ class AuthRepository(
     }
 
     /**
+     * 서버에 새 자격 증명을 등록하기 시작합니다. 이 경우에만 호출해야합니다
+     * 로그인 상태는 [SignInState.SignedIn]입니다.
      * Starts to register a new credential to the server. This should be called only when the
      * sign-in state is [SignInState.SignedIn].
      */
@@ -264,9 +279,10 @@ class AuthRepository(
     }
 
     /**
+     * 서버에 새 자격 증명 등록을 마칩니다. 이 후에 만 ​​호출해야합니다
+     * 공개 키 생성을 위한 [registerRequest] 및 로컬 FIDO2 API 호출.
      * Finishes registering a new credential to the server. This should only be called after
      * a call to [registerRequest] and a local FIDO2 API for public key generation.
-     * FIDO2 API 사용하여 public key 생성 후 서버에 키 쌍의 공개키 전송
      */
     fun registerResponse(data: Intent, processing: MutableLiveData<Boolean>) {
         executor.execute {
@@ -292,6 +308,7 @@ class AuthRepository(
     }
 
     /**
+     * 서버에 등록 된 자격 증명을 제거합니다.
      * Removes a credential registered on the server.
      */
     fun removeKey(credentialId: String, processing: MutableLiveData<Boolean>) {
@@ -310,6 +327,8 @@ class AuthRepository(
     }
 
     /**
+     * * FIDO2 자격 증명으로 로그인을 시작합니다. 로그인 상태 인 경우에만 호출해야합니다.
+     *는 [SignInState.SigningIn]입니다.
      * Starts to sign in with a FIDO2 credential. This should only be called when the sign-in state
      * is [SignInState.SigningIn].
      */
@@ -334,6 +353,8 @@ class AuthRepository(
     }
 
     /**
+     * FIDO2 자격 증명으로 로그인을 마칩니다. 호출 한 후에 만 ​​호출해야합니다.
+     * [signinRequest] 및 키 assertion을 위한 로컬 FIDO2 API
      * Finishes to signing in with a FIDO2 credential. This should only be called after a call to
      * [signinRequest] and a local FIDO2 API for key assertion.
      */
