@@ -23,10 +23,21 @@ const upload = multer({
 
 router.post("/delete", async (req, res) => {
   try {
-    await Board.remove({
-      _id: req.body._id,
-    });
-    res.json({ message: true });
+
+    const _id = req.body._id;
+    const board = await Board.find({ _id });
+    const email = board[0].login_email;
+    console.log(email);
+    console.log(req.body.login_email);
+    if(req.body.login_email==email){
+      await Board.remove({
+        _id: req.body._id,
+      });
+      res.json({ message: "삭제되었습니다." });
+    }else{
+      res.json({message:"내가 쓴 글만 삭제할 수 있습니다."});
+    }
+    
   } catch (err) {
     console.log(err);
     res.json({ message: false });
@@ -81,6 +92,7 @@ router.post("/write", upload.single("imgFile"), async (req, res) => {
         writer: req.body._id,
         title: req.body.title,
         content: req.body.content,
+        login_email:req.body.login_email
       };
     } else {
       obj = {
@@ -88,6 +100,7 @@ router.post("/write", upload.single("imgFile"), async (req, res) => {
         title: req.body.title,
         content: req.body.content,
         imgPath: file.filename,
+        login_email:req.body.login_email
       };
     }
 
@@ -125,7 +138,7 @@ router.post("/writecomment", async (req, res) => {
 
     if (req.body !== undefined) {
       obj = {
-        writer: req.body._id,
+        writer: req.body._id, //댓글작성자
         comment: req.body._comment,
       };
       console.log(obj);
