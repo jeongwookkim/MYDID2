@@ -35,6 +35,7 @@ function BoardWriteForm(props){
     formData.append("_id", $.cookie("login_id"));
     formData.append("title", boardTitle.current.value);
     formData.append("content", boardContent.current.value);
+    formData.append("login_email",$.cookie("login_email"));
 
      if (imgFile === undefined || imgFile.current.files.length === 0) {
      

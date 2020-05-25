@@ -5,6 +5,10 @@ const {
   Types: { ObjectId }
 } = Schema;
 const boardSchema = new Schema({
+  login_email:{
+    type: String,
+    required: true
+  },
   writer: {
     type: ObjectId,
     required: true,

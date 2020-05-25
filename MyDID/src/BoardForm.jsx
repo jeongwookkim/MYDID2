@@ -24,6 +24,13 @@ function BoardRow(props){
             {props.title}
           </NavLink>
         </td>
+        <td>
+          <NavLink
+            to={{ pathname: "/board/detail", query: { _id: props._id } }}
+          >
+            {props.login_email}
+          </NavLink>
+        </td>
       </tr>
     );
 }
@@ -39,13 +46,14 @@ function BoardForm(props){
   const getBoardList = () => {
     const send_param = {
       headers,
-      _id: $.cookie("login_id")
+      _id: $.cookie("login_id"),
+      //email:$.cookie("login_email")
     };
     axios
       .post("http://localhost:8080/board/getBoardList", send_param)
       .then(returnData => {
         if (returnData.data.list.length > 0) {
-          // console.log(returnData.data.list.length);
+          //console.log(returnData.data.list.login_email);
           const boards = returnData.data.list;
           const boardContents = boards.map(item => (
             <BoardRow
@@ -53,6 +61,7 @@ function BoardForm(props){
               _id={item._id}
               createdAt={item.createdAt}
               title={item.title}
+              login_email={item.login_email}
             ></BoardRow>
           ));
           // console.log(boardList);
@@ -60,7 +69,7 @@ function BoardForm(props){
         } else {
           const boardList = (
             <tr>
-              <td colSpan="2">작성한 게시글이 존재하지 않습니다.</td>
+              <td colSpan="3">작성한 게시글이 존재하지 않습니다.</td>
             </tr>
           );
           setBoardList(boardList);
@@ -84,6 +93,7 @@ function BoardForm(props){
             <tr>
               <th>날짜</th>
               <th>글 제목</th>
+              <th>작성자</th>
             </tr>
           </thead>
           <tbody>{boardList}</tbody>
