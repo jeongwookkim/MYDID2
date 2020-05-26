@@ -7,19 +7,18 @@ import {} from "jquery.cookie";
 axios.defaults.withCredentials = true;
 const headers = { withCredentials: true };
 
-function LoginForm(){
-
+function LoginForm() {
   const joinEmail = useRef();
   const joinName = useRef();
   const joinPw = useRef();
   const loginEmail = useRef();
   const loginPw = useRef();
 
-  useEffect(()=>{
+  useEffect(() => {
     loadReCaptcha("6LfGieAUAAAAAJSOoqXS5VQdT_e5AH8u0n2e1PDb");
-  },[]);
+  }, []);
 
-  const verifyCallback = recaptchaToken => {
+  const verifyCallback = (recaptchaToken) => {
     // Here you will get the final recaptchaToken!!!
     console.log(recaptchaToken, "<= your recaptcha token");
   };
@@ -61,12 +60,12 @@ function LoginForm(){
       headers,
       email: joinEmail.current.value,
       name: joinName.current.value,
-      password: joinPw.current.value
+      password: joinPw.current.value,
     };
     axios
       .post("http://localhost:8080/member/join", send_param)
       //정상 수행
-      .then(returnData => {
+      .then((returnData) => {
         if (returnData.data.message) {
           alert(returnData.data.message);
           //이메일 중복 체크
@@ -83,17 +82,22 @@ function LoginForm(){
         }
       })
       //에러
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   };
   const login = () => {
-
-    if (loginEmail.current.value === "" || loginEmail.current.value === undefined) {
+    if (
+      loginEmail.current.value === "" ||
+      loginEmail.current.value === undefined
+    ) {
       alert("이메일 주소를 입력해주세요.");
       loginEmail.current.focus();
       return;
-    } else if (loginPw.current.value === "" || loginPw.current.value === undefined) {
+    } else if (
+      loginPw.current.value === "" ||
+      loginPw.current.value === undefined
+    ) {
       alert("비밀번호를 입력해주세요.");
       loginPw.current.focus();
       return;
@@ -102,12 +106,12 @@ function LoginForm(){
     const send_param = {
       headers,
       email: loginEmail.current.value,
-      password: loginPw.current.value
+      password: loginPw.current.value,
     };
     axios
       .post("http://localhost:8080/member/login", send_param)
       //정상 수행
-      .then(returnData => {
+      .then((returnData) => {
         if (returnData.data.message) {
           // console.log("login_id:" + returnData.data._id);
           $.cookie("login_id", returnData.data._id, { expires: 1 });
@@ -119,20 +123,24 @@ function LoginForm(){
         }
       })
       //에러
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   };
-  const formStyle = {
-    margin: 50
+  const divStyle = {
+    display: "flex",
+    justifyContent: "space-around",
   };
   const buttonStyle = {
-    marginTop: 10
+    marginTop: 10,
   };
+  const formStyle = {};
 
   return (
-    <Form style={formStyle}>
-      <Form.Group controlId="joinForm">
+    <div style={divStyle}>
+      <Form controlId="joinForm">
+        <h3>회원가입</h3>
+
         <Form.Label>Email address</Form.Label>
         <Form.Control
           type="email"
@@ -166,9 +174,11 @@ function LoginForm(){
         >
           회원가입
         </Button>
-      </Form.Group>
+      </Form>
 
-      <Form.Group controlId="loginForm">
+      <Form controlId="loginForm">
+        <h3>로그인</h3>
+
         <Form.Label>Email address</Form.Label>
         <Form.Control
           type="email"
@@ -197,8 +207,8 @@ function LoginForm(){
         >
           로그인
         </Button>
-      </Form.Group>
-    </Form>
+      </Form>
+    </div>
   );
 }
 
