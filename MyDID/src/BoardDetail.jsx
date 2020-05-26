@@ -8,15 +8,39 @@ axios.defaults.withCredentials = true;
 const headers = { withCredentials: true };
 
 function CommentRow(props){
+
+  const removeComment = _id => ()=>{
+    alert("comment delete");
+    const send_param={
+      headers,
+      _id,
+      login_email : $.cookie("login_email")
+    }
+    alert(_id);
+    axios
+      .post("http://localhost:8080/comment/delete",send_param)
+      .then(returnData=>{
+        alert(returnData.data.message);
+        
+      })
+      .catch(err => {
+        console.log(err);
+        alert("글 삭제 실패");
+      });
+  }
   return (
     <tr>
-      <td>{props.createdAt}</td>
+      <td>{props.writer}</td>
       <td>{props.comment}</td>
+      <td>
+        <button onClick={removeComment(props._id)}>삭제</button>
+      </td>
     </tr>
   );
 }
 
 function BoardDetail(props){
+
   const boardTitle = useRef();
   const [board, setBoard] = useState([]);
   const [commentList, setCommentList] = useState();
@@ -26,6 +50,10 @@ function BoardDetail(props){
     margin: 50
   };
 
+
+
+  
+
   const getCommentList = useCallback(() => {
     console.log(commentList);
     axios
@@ -34,15 +62,16 @@ function BoardDetail(props){
         console.log(returnData);
         let commentContents= {};
        
-        if (returnData.data.list.length > 0) {
-          console.log(returnData.data.list.length);
-          const comment = returnData.data.list;
+        if (returnData.data.comment.length > 0) {
+          console.log(returnData.data.comment.length);
+          const comment = returnData.data.comment;
            commentContents = await comment.map(item => (
             <CommentRow
               key={Date.now() + Math.random() * 500}
               _id={item._id}
               createdAt={item.createdAt}
               comment={item.comment}
+              writer={item.writer}
             ></CommentRow>
           ));
           // console.log(boardList);
@@ -58,14 +87,16 @@ function BoardDetail(props){
 
   },[commentList]);
 
+  
+
   const writeComment = useCallback(() => {
     let url;
-    const formData = new FormData();
+    //const formData = new FormData();
     const send_param = {
       headers,
       _id: props.location.query._id,
-      _comment: boardTitle.current.value
-      
+      _comment: boardTitle.current.value,
+      login_email:$.cookie("login_email")      
     };
     axios
       .post("http://localhost:8080/board/writecomment", send_param)
@@ -92,15 +123,16 @@ function BoardDetail(props){
       .then(async returnData => {
         if (returnData.data.board[0]) {
 
-          if (returnData.data.list.length > 0) {
-            console.log(returnData.data.list.length);
-            const comment = returnData.data.list;
+          if (returnData.data.comment.length > 0) {
+            console.log(returnData.data.comment.length);
+            const comment = returnData.data.comment;
             const commentContents = await comment.map(item => (
               <CommentRow
                 key={Date.now() + Math.random() * 500}
                 _id={item._id}
                 createdAt={item.createdAt}
                 comment={item.comment}
+                writer={item.writer}
               ></CommentRow>
             ));
             // console.log(boardList);
@@ -150,7 +182,7 @@ function BoardDetail(props){
                   글 삭제
                 </Button>
                <br></br>
-                      <Form.Control
+                <Form.Control
                 type="text"
                 style={titleStyle}
                 placeholder="댓글쓰기"
@@ -170,7 +202,7 @@ function BoardDetail(props){
                           <tr>
                           <th>댓글작성자</th>
                           <th>댓글내용</th>
-                          
+                          <th>삭제</th>
                           </tr>
                         </thead>
                         <tbody>{commentList}</tbody>
@@ -208,6 +240,8 @@ function BoardDetail(props){
     }
 
   },[flag, setBoardDetail]);
+
+  
 
   const deleteBoard = _id => {
     const send_param = {

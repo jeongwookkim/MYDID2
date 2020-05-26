@@ -142,19 +142,20 @@ router.post("/getBoardList", async (req, res) => {
 router.post("/writecomment", async (req, res) => {
   try {
     const _id = req.body._id;
+    console.log(req.body.login_email);
     /* const comment = await Comment.find(
       ); */
-      console.log(req.body);
+      //console.log(req.body);
       let obj;
 
     if (req.body !== undefined) {
       obj = {
-        writer: req.body._id, //댓글작성자
+        writer: req.body.login_email, //댓글작성자
         comment: req.body._comment,
       };
-      console.log(obj);
+      console.log("obj"+obj);
     } else {
-     
+      res.json({m})
     }
 
 
@@ -176,7 +177,8 @@ router.post("/detail", async (req, res) => {
     const comment = await Comment.find(
     
       );
-    res.json({ board, list: comment});
+    res.json({ board, comment});
+    //console.log(comment[0].writer);
     
   } catch (err) {
     console.log(err);
