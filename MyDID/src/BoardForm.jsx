@@ -28,7 +28,7 @@ function BoardRow(props){
           <NavLink
             to={{ pathname: "/board/detail", query: { _id: props._id } }}
           >
-            {props.login_email}
+            {props.name}
           </NavLink>
         </td>
       </tr>
@@ -54,6 +54,7 @@ function BoardForm(props){
       .then(returnData => {
         if (returnData.data.list.length > 0) {
           //console.log(returnData.data.list.login_email);
+          console.log(returnData.data.list);
           const boards = returnData.data.list;
           const boardContents = boards.map(item => (
             <BoardRow
@@ -61,7 +62,7 @@ function BoardForm(props){
               _id={item._id}
               createdAt={item.createdAt}
               title={item.title}
-              login_email={item.login_email}
+              name={item.writer.name}
             ></BoardRow>
           ));
           // console.log(boardList);

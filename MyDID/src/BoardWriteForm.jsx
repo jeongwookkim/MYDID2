@@ -69,6 +69,7 @@ function BoardWriteForm(props){
       .post(url, formData)
       //정상 수행
       .then(returnData => {
+        console.log(returnData.data);
         if (returnData.data.message) {
           alert(returnData.data.message);
           window.location.href = "/";

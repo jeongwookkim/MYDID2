@@ -37,6 +37,7 @@ function BoardDetail(props){
         if (returnData.data.list.length > 0) {
           console.log(returnData.data.list.length);
           const comment = returnData.data.list;
+          console.log(comment);
            commentContents = await comment.map(item => (
             <CommentRow
               key={Date.now() + Math.random() * 500}
@@ -45,13 +46,13 @@ function BoardDetail(props){
               comment={item.comment}
             ></CommentRow>
           ));
+          console.log(commentContents);
           // console.log(boardList);
         }
         setCommentList(commentContents);
         console.log('hi')
       })
       .catch(err => {
-        
         console.log(err);
       });
       console.log('hi2')
