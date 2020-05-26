@@ -23,21 +23,19 @@ const upload = multer({
 
 router.post("/delete", async (req, res) => {
   try {
-
     const _id = req.body._id;
     const board = await Board.find({ _id });
     const email = board[0].login_email;
     console.log(email);
     console.log(req.body.login_email);
-    if(req.body.login_email==email){
+    if (req.body.login_email == email) {
       await Board.remove({
         _id: req.body._id,
       });
       res.json({ message: "삭제되었습니다." });
-    }else{
-      res.json({message:"내가 쓴 글만 삭제할 수 있습니다."});
+    } else {
+      res.json({ message: "내가 쓴 글만 삭제할 수 있습니다." });
     }
-    
   } catch (err) {
     console.log(err);
     res.json({ message: false });
@@ -50,8 +48,8 @@ router.post("/update", upload.single("imgFile"), async (req, res) => {
     const board = await Board.find({ _id });
     const email = board[0].login_email;
     console.log(email);
-    console.log("현잴로그인"+req.body.login_email);
-    if(req.body.login_email==email){
+    console.log("현재로그인" + req.body.login_email);
+    if (req.body.login_email == email) {
       const file = req.file;
       console.log(file);
 
@@ -63,7 +61,7 @@ router.post("/update", upload.single("imgFile"), async (req, res) => {
               writer: req.body._id,
               title: req.body.title,
               content: req.body.content,
-              login_email:req.body.login_email
+              login_email: req.body.login_email,
             },
           }
         );
@@ -76,15 +74,15 @@ router.post("/update", upload.single("imgFile"), async (req, res) => {
               title: req.body.title,
               content: req.body.content,
               imgPath: file.filename,
-              login_email:req.body.login_email
+              login_email: req.body.login_email,
             },
           }
         );
       }
 
       res.json({ message: "게시글이 수정 되었습니다." });
-    }else{
-      res.json({message:"내가 쓴 글만 수정가능"});
+    } else {
+      res.json({ message: "내가 쓴 글만 수정가능" });
     }
   } catch (err) {
     console.log(err);
@@ -103,7 +101,6 @@ router.post("/write", upload.single("imgFile"), async (req, res) => {
         writer: req.body._id,
         title: req.body.title,
         content: req.body.content,
-        
       };
     } else {
       obj = {
@@ -111,7 +108,6 @@ router.post("/write", upload.single("imgFile"), async (req, res) => {
         title: req.body.title,
         content: req.body.content,
         imgPath: file.filename,
-       
       };
     }
 
@@ -126,13 +122,12 @@ router.post("/write", upload.single("imgFile"), async (req, res) => {
 
 router.post("/getBoardList", async (req, res) => {
   try {
-    const board = await Board.find({ writer: req.body._id }, null, {
+    const board = await Board.find({}, null, {
       sort: { createdAt: -1 },
     }).populate("writer");
     console.log(board);
 
-
-  /*   const board = await Board.find(
+    /*   const board = await Board.find(
       { writer: _id }, null, {
       sort: { createdAt: -1 },
     } 
@@ -150,19 +145,18 @@ router.post("/writecomment", async (req, res) => {
     console.log(req.body.login_email);
     /* const comment = await Comment.find(
       ); */
-      //console.log(req.body);
-      let obj;
+    //console.log(req.body);
+    let obj;
 
     if (req.body !== undefined) {
       obj = {
         writer: req.body.login_email, //댓글작성자
         comment: req.body._comment,
       };
-      console.log("obj"+obj);
+      console.log("obj" + obj);
     } else {
-      res.json({m})
+      res.json({ m });
     }
-
 
     const comment = new Comment(obj);
     await comment.save();
@@ -173,24 +167,19 @@ router.post("/writecomment", async (req, res) => {
   }
 });
 
-
-
 router.post("/detail", async (req, res) => {
   try {
     const _id = req.body._id;
     const board = await Board.find({ _id });
-    const comment = await Comment.find(
-    
-      );
-    res.json({ board, comment});
+    //const comment = await Comment.find();
+    const comment = await Comment.find({}).sort({ createdAt: -1 });
+
+    res.json({ board, comment });
     //console.log(comment[0].writer);
-    
   } catch (err) {
     console.log(err);
     res.json({ message: false });
   }
 });
-
-
 
 module.exports = router;
