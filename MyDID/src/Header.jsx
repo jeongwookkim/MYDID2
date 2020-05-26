@@ -46,7 +46,8 @@ function Header(){
   return (
     <div>
       <Navbar>
-        <Navbar.Brand href="/">Today I Learned</Navbar.Brand>
+      <Image src="./img/mydid-logo.PNG" width = "300px" />
+        <Navbar.Brand href="/" ></Navbar.Brand>
         <Navbar.Toggle />
         <Navbar.Collapse className="justify-content-end">
           {/* <NavLink to="/mypage">
@@ -69,7 +70,7 @@ function Header(){
           </Button>
         </Navbar.Collapse>
       </Navbar>
-      <Image src="./img/main.png" fluid />
+      {/* <Image src="./img/main.png" fluid /> */}
     </div>
   );
   
