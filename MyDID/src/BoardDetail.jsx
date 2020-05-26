@@ -10,7 +10,7 @@ const headers = { withCredentials: true };
 function CommentRow(props){
 
   const removeComment = _id => ()=>{
-    alert("comment delete");
+    //alert("comment delete");
     const send_param={
       headers,
       _id,
