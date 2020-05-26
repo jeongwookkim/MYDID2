@@ -103,7 +103,7 @@ router.post("/write", upload.single("imgFile"), async (req, res) => {
         writer: req.body._id,
         title: req.body.title,
         content: req.body.content,
-        login_email:req.body.login_email
+        
       };
     } else {
       obj = {
@@ -111,7 +111,7 @@ router.post("/write", upload.single("imgFile"), async (req, res) => {
         title: req.body.title,
         content: req.body.content,
         imgPath: file.filename,
-        login_email:req.body.login_email
+       
       };
     }
 
@@ -126,12 +126,17 @@ router.post("/write", upload.single("imgFile"), async (req, res) => {
 
 router.post("/getBoardList", async (req, res) => {
   try {
-    const _id = req.body._id;
-    const board = await Board.find(
-      /* { writer: _id }, null, {
+    const board = await Board.find({ writer: req.body._id }, null, {
       sort: { createdAt: -1 },
-    } */ 
-    );
+    }).populate("writer");
+    console.log(board);
+
+
+  /*   const board = await Board.find(
+      { writer: _id }, null, {
+      sort: { createdAt: -1 },
+    } 
+    ); */
     res.json({ list: board });
   } catch (err) {
     console.log(err);

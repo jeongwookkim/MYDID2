@@ -62,10 +62,13 @@ function BoardDetail(props){
         console.log(returnData);
         let commentContents= {};
        
-        if (returnData.data.comment.length > 0) {
-          console.log(returnData.data.comment.length);
-          const comment = returnData.data.comment;
-           commentContents = await comment.map(item => (
+
+        if (returnData.data.list.length > 0) {
+          console.log(returnData.data.list.length);
+          const comment = returnData.data.list;
+          console.log(comment);
+
+                  commentContents = await comment.map(item => (
             <CommentRow
               key={Date.now() + Math.random() * 500}
               _id={item._id}
@@ -74,13 +77,13 @@ function BoardDetail(props){
               writer={item.writer}
             ></CommentRow>
           ));
+          console.log(commentContents);
           // console.log(boardList);
         }
         setCommentList(commentContents);
         console.log('hi')
       })
       .catch(err => {
-        
         console.log(err);
       });
       console.log('hi2')

@@ -5,11 +5,7 @@ const {
   Types: { ObjectId }
 } = Schema;
 const boardSchema = new Schema({
-  login_email:{
-    type: String,
-    required: true
-  },
-  writer: {
+    writer: {
     type: ObjectId,
     required: true,
     ref: "User"
