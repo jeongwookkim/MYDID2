@@ -6,9 +6,8 @@ const {
 } = Schema;
 const commentSchema = new Schema({
   writer: {
-    type: ObjectId,
-    //required: true,
-    //ref: "User"
+    type: String,
+    required: true
   },
   comment: {
     type: String,

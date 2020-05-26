@@ -55,6 +55,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/member", require("./routes/memberRouter"));
 app.use("/board", require("./routes/boardRouter"));
 app.use("/auth", require("./routes/authRouter"));
+app.use("/comment", require("./routes/commentRouter"));
 
 app.listen(8080, () => {
   console.log("listen umm..umm..um...");
