@@ -141,7 +141,7 @@ function BoardDetail(props){
         console.log(err);
       });
       
-  },[props.location.query, setComments, comments]);
+  },[props.location.query, setComments]);
 
   //게시판 상세 세팅(초기 랜더링시)
   const setBoardDetail = useCallback(() => {
