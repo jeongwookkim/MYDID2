@@ -102,7 +102,7 @@ function BoardDetail(props){
       login_email:$.cookie("login_email")      
     };
     axios
-      .post("http://localhost:8080/board/writecomment", send_param)
+      .post("http://localhost:8080/comment/writecomment", send_param)
 
       getCommentList();
   },[props.location.query, getCommentList]);

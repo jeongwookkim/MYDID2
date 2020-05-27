@@ -5,6 +5,35 @@ const path = require("path");
 const Board = require("../schemas/board");
 const Comment = require("../schemas/comment");
 
+
+router.post("/writecomment", async (req, res) => {
+  try {
+    const _id = req.body._id;
+    console.log(req.body.login_email);
+    /* const comment = await Comment.find(
+      ); */
+    //console.log(req.body);
+    let obj;
+
+    if (req.body !== undefined) {
+      obj = {
+        writer: req.body.login_email, //댓글작성자
+        comment: req.body._comment,
+      };
+      console.log("obj" + obj);
+    } else {
+      res.json({ m });
+    }
+
+    const comment = new Comment(obj);
+    await comment.save();
+    res.json({ message: "댓글이 작성되었습니다." });
+  } catch (err) {
+    console.log(err);
+    res.json({ message: false });
+  }
+});
+
 router.post("/delete", async (req, res) => {
     try {
         const _id = req.body._id;
