@@ -23,15 +23,18 @@ function Header() {
    setButtonDisplay("none");
   }
  }
+
  function logout() {
   axios.get("http://localhost:8080/member/logout",{headers})
-   .then((returnData) => {if (returnData.data.message) {
-     $.removeCookie("login_id");
+   .then((returnData) => {
+     if(returnData.data.message){
+      $.removeCookie("login_id");
       alert("로그아웃 되었습니다!");
-​     window.location.href = "/";
-​    }
+      window.location.href = "/";
+    }
    });
  }
+
  const buttonStyle = {
   margin: "0px 5px 0px 10px",
   display: buttonDisplay,
