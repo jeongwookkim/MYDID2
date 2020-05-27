@@ -62,11 +62,11 @@ router.post("/login", async (req, res) => {
       if (err) {
         console.log(err);
       } else {
-        console.log(user);
+        //console.log("1"+user);
         if (user) {
           //아이디가 존재할 경우 이메일과 패스워드가 일치하는 회원이 있는지 확인
-          console.log(req.body.password);
-          console.log(user.salt);
+          //console.log(req.body.password);
+          //console.log(user.salt);
           crypto.pbkdf2(
             req.body.password,
             user.salt,
@@ -85,7 +85,7 @@ router.post("/login", async (req, res) => {
                 };
 
                 const user2 = await User.findOne(obj);
-                console.log(user2);
+                //console.log(user2);
                 if (user2) {
                   // 있으면 로그인 처리
                   // console.log(req.body._id);
@@ -95,7 +95,11 @@ router.post("/login", async (req, res) => {
                     },
                     { $set: { loginCnt: 0 } }
                   );
-                  req.session.email = user.email;
+                  req.session.email = user2.email;
+                  console.log(req.session.email);
+                  
+                  //console.log(user);
+                  //console.log(user2);
                   res.json({
                     message: "로그인 되었습니다!",
                     _id: user2._id,

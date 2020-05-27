@@ -36,6 +36,42 @@ function AuthForm(){
         });
     }
 
+
+    const gihoon = ()=>{
+      const send_param = {
+        username:11,
+        registerNumber:11
+      };
+
+      axios
+        .post("https://gihoon.glitch.me/auth/register", send_param)
+        .then(returnData =>{
+            console.log(returnData);
+        })
+      //에러
+        .catch(err => {
+          console.log(err);
+        });
+    }
+
+
+    const gihoon2 = ()=>{
+      const send_param = {
+        username:11,
+        registerNumber:11
+      };
+
+      axios
+        .post("https://gihoon.glitch.me/auth/confirmregister", send_param)
+        .then(returnData =>{
+            console.log(returnData);
+        })
+      //에러
+        .catch(err => {
+          console.log(err);
+        });
+    }
+
     const divStyle = {
       margin: 50
     };
@@ -46,6 +82,11 @@ function AuthForm(){
         <button onClick={goFido}>
             인증하기
         </button>
+        <br/>
+        <br/>
+        <button onClick={gihoon}>gihoon 요청</button>
+        <br/>
+        <button onClick={gihoon2}>gihoon2 요청</button>
       </div>
     </div>
   );

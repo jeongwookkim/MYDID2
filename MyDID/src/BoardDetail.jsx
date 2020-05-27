@@ -64,7 +64,8 @@ function BoardDetail(props){
         console.log(err);
       });
 
-  },[]); 
+
+  },[]);
 
   //게시글 상세정보 가져오기
   const getDetail = useCallback(() => {
