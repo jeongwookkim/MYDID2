@@ -7,73 +7,74 @@ import {} from "jquery.cookie";
 axios.defaults.withCredentials = true;
 const headers = { withCredentials: true };
 
-function Header(){
+function Header() {
+ const [buttonDisplay, setButtonDisplay] = useState("none");
 
-  const [buttonDisplay, setButtonDisplay] = useState("none");
-  
-  useEffect(() => {
-    getButtonStyle();
-  }, []);
+ useEffect(() => {
 
-  function getButtonStyle(){
-    if ($.cookie("login_id")) {
-      setButtonDisplay("block");
-    } else {
-      setButtonDisplay("none");
-    }
+  getButtonStyle();
+
+ }, []);
+
+ function getButtonStyle() {
+  if ($.cookie("login_id")) {
+   setButtonDisplay("block");
+  } else {
+   setButtonDisplay("none");
   }
-  
+ }
+ function logout() {
+  axios.get("http://localhost:8080/member/logout",{headers})
+   .then((returnData) => {if (returnData.data.message) {
+     $.removeCookie("login_id");
+      alert("로그아웃 되었습니다!");
+​     window.location.href = "/";
+​    }
+   });
+ }
+ const buttonStyle = {
+  margin: "0px 5px 0px 10px",
+  display: buttonDisplay,
+ };
 
-  function logout(){
-    axios
-      .get("http://localhost:8080/member/logout", {
-        headers
-      })
-      .then(returnData => {
-        if (returnData.data.message) {
-          $.removeCookie("login_id");
-          alert("로그아웃 되었습니다!");
-          window.location.href = "/";
-        }
-      });
-  };
+ const divStyle = {
+  justifyContent: "space-around",
+  backgroundColor: "black",
+  backgroundPosition: "center",
+  backgroundRepeat: "no-repeat",
+  position: "relative",
+ };
 
-  const buttonStyle = {
-    margin: "0px 5px 0px 10px",
-    display: buttonDisplay
-  };
-
-  return (
-    <div>
-      <Navbar>
-      <Image src="./img/mydid-logo.PNG" width = "300px" />
-        <Navbar.Brand href="/" ></Navbar.Brand>
-        <Navbar.Toggle />
-        <Navbar.Collapse className="justify-content-end">
-          {/* <NavLink to="/mypage">
-            <Button style={buttonStyle} variant="primary">
-              회원정보 수정
-            </Button>
-          </NavLink> */}
-          <NavLink to="/">
-            <Button style={buttonStyle} variant="primary">
-              글목록
-            </Button>
-          </NavLink>
-          <NavLink to="/boardWrite">
-            <Button style={buttonStyle} variant="primary">
-              글쓰기
-            </Button>
-          </NavLink>
-          <Button style={buttonStyle} onClick={logout} variant="primary">
-            로그아웃
-          </Button>
-        </Navbar.Collapse>
-      </Navbar>
-      {/* <Image src="./img/main.png" fluid /> */}
-    </div>
-  );
-  
+ return (
+    <div style={divStyle}>
+   <Image src="./img/mydid-logo2.PNG" width="300px" />
+   <Navbar>
+​    <Navbar.Brand href="/"></Navbar.Brand>
+​    <Navbar.Toggle />
+​    <Navbar.Collapse className="justify-content-end">
+​     {/* <NavLink to="/mypage">
+​      <Button style={buttonStyle} variant="primary">
+​       회원정보 수정
+​      </Button>
+​     </NavLink> */}
+​     <NavLink to="/">
+​      <Button style={buttonStyle} variant="primary">
+​       글목록
+​      </Button>
+​     </NavLink>
+​     <NavLink to="/boardWrite">
+​      <Button style={buttonStyle} variant="primary">
+​       글쓰기
+​      </Button>
+​     </NavLink>
+​     <Button style={buttonStyle} onClick={logout} variant="primary">
+​      로그아웃
+​     </Button>
+​    </Navbar.Collapse>
+   </Navbar>
+   {/* <Image src="./img/main.png" fluid /> */}
+  </div>
+ );
 }
 
 export default Header;
