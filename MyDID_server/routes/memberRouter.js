@@ -96,7 +96,7 @@ router.post("/login", async (req, res) => {
                     { $set: { loginCnt: 0 } }
                   );
                   req.session.email = user2.email;
-                  console.log(req.session.email);
+                  //console.log(req.session.email);
                   
                   //console.log(user);
                   //console.log(user2);
