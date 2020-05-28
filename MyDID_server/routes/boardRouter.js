@@ -56,6 +56,11 @@ router.post("/delete", async (req, res) => {
 });
 
 router.post("/update", upload.single("imgFile"), async (req, res) => {
+
+  const _id = req.body.boardId;
+  const board = await Board.find({ _id });
+  console.log(board);
+
   try {
     const _id = req.body.boardId;
     const board = await Board.find({ _id });
