@@ -25,6 +25,7 @@ router.post("/", async (req, res) => {
                 }else{
                     req.session.auth = user.auth;
                     console.log("session.aut : " + req.session.auth);
+                    res.json({ message: "인증완료",auth_ok:auth_ok});
                 }
             });
         }

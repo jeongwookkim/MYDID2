@@ -7,31 +7,6 @@ import {} from "jquery.cookie";
 axios.defaults.withCredentials = true;
 const headers = { withCredentials: true };
 
-//게시글 삭제
-const deleteBoard = (_id) => {
-  const send_param = {
-    headers,
-    _id,
-    login_email: $.cookie("login_email"),
-  };
-
-  //if($.cookie("login_id"))
-  if (window.confirm("정말 삭제하시겠습니까?")) {
-    axios
-      .post("http://localhost:8080/board/delete", send_param)
-      //정상 수행
-      .then((returnData) => {
-        alert(returnData.data.message);
-        window.location.href = "/";
-      })
-      //에러
-      .catch((err) => {
-        console.log(err);
-        alert("글 삭제 실패");
-      });
-  }
-};
-
 const marginBottom = {
   marginBottom: 5,
   width: 90,
@@ -45,7 +20,14 @@ function RemoveModifyBtn(props) {
         <Button
           block
           style={marginBottom}
-          onClick={deleteBoard.bind(null, props.location.query._id)}
+          onClick={props.updateBoard}
+        >
+          글 수정
+        </Button>
+        <Button
+          block
+          style={marginBottom}
+          onClick={props.deleteBoard}
         >
           글 삭제
         </Button>
@@ -140,7 +122,6 @@ function BoardDetail(props) {
             const comment = returnData.data.comment;
             await setComments(comment);
           }
-
           const board = (
             <div>
               {/* <Image src={process.env.REACT_APP_URL + returnData.data.board[0].imgPath} fluid /> */}
@@ -154,47 +135,20 @@ function BoardDetail(props) {
                   <tr>
                     <td>{returnData.data.board[0].content}</td>
                   </tr>
-                </tbody>
-              </Table>
-              <div>
-                {/* <NavLink
-                  to={{
-                    pathname: "/boardWrite",
-                    query: {
-                      title: returnData.data.board[0].title,
-                      content: returnData.data.board[0].content,
-                      _id: props.location.query._id,
-                    },
-                  }}
-                  >
-                  </NavLink> */}
-
                 {/* //////////////////////삼항연산자//////////////////////////// */}
-                {props.writer === $.cookie("login_id") ? (
+                {props.location.query.writer === $.cookie("login_id") ? (
                   <RemoveModifyBtn
                     updateBoard={updateBoard.bind(
                       null,
-                      props.location.query._id
+                      props.location.query._id, props.location.query.writer
                     )}
+                    deleteBoard={deleteBoard.bind(null, props.location.query._id, props.location.query.writer)}
                   />
                 ) : (
                   ""
                 )}
-                <Button
-                  block
-                  style={marginBottom}
-                  onClick={updateBoard.bind(null, props.location.query._id)}
-                >
-                  글 수정
-                </Button>
-                <Button
-                  block
-                  style={marginBottom}
-                  onClick={deleteBoard.bind(null, props.location.query._id)}
-                >
-                  글 삭제
-                </Button>
-              </div>
+                </tbody>
+              </Table>
             </div>
           );
           await setBoard(board);
@@ -227,10 +181,12 @@ function BoardDetail(props) {
 
   //게시글 수정
   const updateBoard = (_id) => {
+    console.log("update : "+_id);
     const send_param = {
       headers,
       _id,
-      login_email: $.cookie("login_email"),
+      
+      //login_email: $.cookie("login_email"),
     };
 
     //if($.cookie("login_id"))
@@ -251,11 +207,14 @@ function BoardDetail(props) {
   };
 
   //게시글 삭제
-  const deleteBoard = (_id) => {
+  const deleteBoard = (_id, writer) => {
+
+    //alert(writer);
     const send_param = {
       headers,
       _id,
-      login_email: $.cookie("login_email"),
+      writer,
+      //login_email: $.cookie("login_email"),
     };
 
     //if($.cookie("login_id"))
@@ -306,7 +265,7 @@ function BoardDetail(props) {
       headers,
       _id: props.location.query._id,
       _comment: boardTitle.current.value,
-      login_email: $.cookie("login_email"),
+      //login_email: $.cookie("login_email"),
     };
     axios.post("http://localhost:8080/comment/writecomment", send_param);
 

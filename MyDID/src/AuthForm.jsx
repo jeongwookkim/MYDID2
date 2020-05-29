@@ -99,6 +99,10 @@ function AuthForm(){
         <br/>
         <button onClick={gihoon2}>gihoon2 요청</button>
         <br/>
+        <div>
+          <canvas id ="canvas" />
+        </div>
+        <br/>
         <button onClick={qrcode}>QRcode</button>
       </div>
     </div>

@@ -9,20 +9,23 @@ axios.defaults.withCredentials = true;
 const headers = { withCredentials: true };
 
 function BoardRow(props) {
+  console.log("$.cookie(login_id):" + $.cookie("login_id"));
+  console.log("props.writer:" + props.writer);
+
   return (
     <tr>
       <td>
-        <NavLink to={{ pathname: "/board/detail", query: { _id: props._id } }}>
+        <NavLink to={{ pathname: "/board/detail", query: { _id: props._id, writer: props.writer } }}>
           {props.createdAt.substring(0, 10)}
         </NavLink>
       </td>
       <td>
-        <NavLink to={{ pathname: "/board/detail", query: { _id: props._id } }}>
+        <NavLink to={{ pathname: "/board/detail", query: { _id: props._id, writer: props.writer } }}>
           {props.title}
         </NavLink>
       </td>
       <td>
-        <NavLink to={{ pathname: "/board/detail", query: { _id: props._id } }}>
+        <NavLink to={{ pathname: "/board/detail", query: { _id: props._id, writer: props.writer } }}>
           {props.name}
         </NavLink>
       </td>
@@ -41,8 +44,9 @@ function BoardForm(props) {
     const send_param = {
       headers,
       _id: $.cookie("login_id"),
-      //email:$.cookie("login_email")
+      email:$.cookie("login_email")
     };
+
     axios
       .post("http://localhost:8080/board/getBoardList", send_param)
       .then((returnData) => {
@@ -57,6 +61,8 @@ function BoardForm(props) {
               createdAt={item.createdAt}
               title={item.title}
               name={item.writer.name}
+              writer={item.writer._id}
+              //email={item.writer.email}
             ></BoardRow>
           ));
           // console.log(boardList);
