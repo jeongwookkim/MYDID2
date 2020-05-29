@@ -56,56 +56,60 @@ router.post("/delete", async (req, res) => {
 });
 
 router.post("/update", upload.single("imgFile"), async (req, res) => {
+
+
   const _id = req.body.boardId;
   const board = await Board.find({ _id });
   console.log(board);
 
-  // try {
-  //   const _id = req.body.boardId;
-  //   const board = await Board.find({ _id });
-  //   console.log(board);
-  //   const writer = board.writer.email;
-  //   console.log(writer);
-  //   console.log("현재로그인" + req.session.email);
-  //   if (req.session.email == email) {
-  //     const file = req.file;
-  //     console.log(file);
 
-  //     if (file == undefined) {
-  //       await Board.update(
-  //         { _id: req.body.boardId },
-  //         {
-  //           $set: {
-  //             writer: req.body._id,
-  //             title: req.body.title,
-  //             content: req.body.content,
-  //             login_email: req.body.login_email,
-  //           },
-  //         }
-  //       );
-  //     } else {
-  //       await Board.update(
-  //         { _id: req.body.boardId },
-  //         {
-  //           $set: {
-  //             writer: req.body._id,
-  //             title: req.body.title,
-  //             content: req.body.content,
-  //             imgPath: file.filename,
-  //             login_email: req.body.login_email,
-  //           },
-  //         }
-  //       );
-  //     }
 
-  //     res.json({ message: "게시글이 수정 되었습니다." });
-  //   } else {
-  //     res.json({ message: "내가 쓴 글만 수정가능" });
-  //   }
-  // } catch (err) {
-  //   console.log(err);
-  //   res.json({ message: false });
-  // }
+  try {
+    const _id = req.body.boardId;
+    const board = await Board.find({ _id });
+    const email = board[0].login_email;
+    console.log(email);
+    console.log("현재로그인" + req.body.login_email);
+    if (req.body.login_email == email) {
+      const file = req.file;
+      console.log(file);
+
+      if (file == undefined) {
+        await Board.update(
+          { _id: req.body.boardId },
+          {
+            $set: {
+              writer: req.body._id,
+              title: req.body.title,
+              content: req.body.content,
+              login_email: req.body.login_email,
+            },
+          }
+        );
+      } else {
+        await Board.update(
+          { _id: req.body.boardId },
+          {
+            $set: {
+              writer: req.body._id,
+              title: req.body.title,
+              content: req.body.content,
+              imgPath: file.filename,
+              login_email: req.body.login_email,
+            },
+          }
+        );
+      }
+
+      res.json({ message: "게시글이 수정 되었습니다." });
+    } else {
+      res.json({ message: "내가 쓴 글만 수정가능" });
+    }
+  } catch (err) {
+    console.log(err);
+    res.json({ message: false });
+  }
+
 });
 
 router.post("/write", upload.single("imgFile"), async (req, res) => {

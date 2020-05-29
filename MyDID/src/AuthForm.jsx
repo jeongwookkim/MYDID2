@@ -4,6 +4,7 @@ import { NavLink } from "react-router-dom";
 import axios from "axios";
 import $ from "jquery";
 import {} from "jquery.cookie";
+import QRCode from 'qrcode'
 axios.defaults.withCredentials = true;
 const headers = { withCredentials: true };
 
@@ -72,6 +73,16 @@ function AuthForm(){
         });
     }
 
+    const qrcode = ()=>{
+      
+      let str = "https://gihoon.glitch.me/auth/register"
+
+      QRCode.toCanvas(document.getElementById('canvas'), str,function(error) {
+        if (error) console.error(error)
+        //console.log('success!')
+      })
+    }
+    
     const divStyle = {
       margin: 50
     };
@@ -87,6 +98,8 @@ function AuthForm(){
         <button onClick={gihoon}>gihoon 요청</button>
         <br/>
         <button onClick={gihoon2}>gihoon2 요청</button>
+        <br/>
+        <button onClick={qrcode}>QRcode</button>
       </div>
     </div>
   );
