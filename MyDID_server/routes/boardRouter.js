@@ -57,9 +57,12 @@ router.post("/delete", async (req, res) => {
 
 router.post("/update", upload.single("imgFile"), async (req, res) => {
 
+
   const _id = req.body.boardId;
   const board = await Board.find({ _id });
   console.log(board);
+
+
 
   try {
     const _id = req.body.boardId;
@@ -106,6 +109,7 @@ router.post("/update", upload.single("imgFile"), async (req, res) => {
     console.log(err);
     res.json({ message: false });
   }
+
 });
 
 router.post("/write", upload.single("imgFile"), async (req, res) => {
@@ -143,7 +147,7 @@ router.post("/getBoardList", async (req, res) => {
     const board = await Board.find({}, null, {
       sort: { createdAt: -1 },
     }).populate("writer");
-    console.log(board);
+    //console.log(board);
 
     /*   const board = await Board.find(
       { writer: _id }, null, {

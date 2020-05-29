@@ -63,7 +63,7 @@ function Header() {
           ​{" "}
           <NavLink to="/">
             ​{" "}
-            <Button style={buttonStyle} variant="primary">
+            <Button style={buttonStyle} variant="secondary">
               ​ 글목록 ​{" "}
             </Button>
             ​{" "}
@@ -71,13 +71,13 @@ function Header() {
           ​{" "}
           <NavLink to="/boardWrite">
             ​{" "}
-            <Button style={buttonStyle} variant="primary">
+            <Button style={buttonStyle} variant="secondary">
               ​ 글쓰기 ​{" "}
             </Button>
             ​{" "}
           </NavLink>
           ​{" "}
-          <Button style={buttonStyle} onClick={logout} variant="primary">
+          <Button style={buttonStyle} onClick={logout} variant="danger">
             ​ 로그아웃 ​{" "}
           </Button>
           ​{" "}
