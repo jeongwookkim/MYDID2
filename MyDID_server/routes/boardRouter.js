@@ -37,13 +37,15 @@ const upload = multer({
 router.post("/delete", async (req, res) => {
   try {
     const _id = req.body._id;
-    const board = await Board.find({ _id });
-    const email = board[0].login_email;
-    console.log(email);
-    console.log(req.body.login_email);
-    if (req.body.login_email == email) {
+    const writer =req.body.writer;
+    console.log("bodyid : "+ _id);
+    console.log("writer : "+writer);
+    console.log("session id : "+req.session._id);
+    // const board = await Board.find({ _id }).populate("writer");
+    // console.log(board[0].writer._id);
+    if(writer===req.session._id){
       await Board.remove({
-        _id: req.body._id,
+        _id: _id,
       });
       res.json({ message: "삭제되었습니다." });
     } else {
@@ -56,53 +58,45 @@ router.post("/delete", async (req, res) => {
 });
 
 router.post("/update", upload.single("imgFile"), async (req, res) => {
-
-
-  const _id = req.body.boardId;
-  const board = await Board.find({ _id });
-  console.log(board);
-
-
-
-  try {
+  try{    
+    console.log("update"+ req.body);
     const _id = req.body.boardId;
-    const board = await Board.find({ _id });
-    const email = board[0].login_email;
-    console.log(email);
-    console.log("현재로그인" + req.body.login_email);
-    if (req.body.login_email == email) {
-      const file = req.file;
-      console.log(file);
-
+    console.log(_id);
+    console.log("session id : "+req.session._id);
+    const board = await Board.find({ _id }).populate("writer");
+    console.log("update board : "+ board[0].writer._id);
+  
+    if(board[0].writer._id===req.session._id){
       if (file == undefined) {
         await Board.update(
-          { _id: req.body.boardId },
+          { _id: req.session._id },
           {
             $set: {
-              writer: req.body._id,
+              writer: req.session._id,
               title: req.body.title,
               content: req.body.content,
-              login_email: req.body.login_email,
+              //login_email: req.body.login_email,
             },
           }
         );
       } else {
         await Board.update(
-          { _id: req.body.boardId },
+          { _id: req.session._id },
           {
             $set: {
               writer: req.body._id,
               title: req.body.title,
               content: req.body.content,
               imgPath: file.filename,
-              login_email: req.body.login_email,
+              //login_email: req.body.login_email,
             },
           }
         );
       }
 
       res.json({ message: "게시글이 수정 되었습니다." });
-    } else {
+
+    }else{
       res.json({ message: "내가 쓴 글만 수정가능" });
     }
   } catch (err) {
@@ -120,13 +114,13 @@ router.post("/write", upload.single("imgFile"), async (req, res) => {
 
     if (file == undefined) {
       obj = {
-        writer: req.body._id,
+        writer: req.session._id,
         title: req.body.title,
         content: req.body.content,
       };
     } else {
       obj = {
-        writer: req.body._id,
+        writer: req.session._id,
         title: req.body.title,
         content: req.body.content,
         imgPath: file.filename,
@@ -147,7 +141,7 @@ router.post("/getBoardList", async (req, res) => {
     const board = await Board.find({}, null, {
       sort: { createdAt: -1 },
     }).populate("writer");
-    //console.log(board);
+    console.log(board);
 
     /*   const board = await Board.find(
       { writer: _id }, null, {
@@ -164,9 +158,11 @@ router.post("/getBoardList", async (req, res) => {
 router.post("/detail", async (req, res) => {
   try {
     const _id = req.body._id;
-    const board = await Board.find({ _id });
-    //const comment = await Comment.find();
+    const board = await Board.find({ _id }).populate("writer");
     const comment = await Comment.find({}).sort({ createdAt: -1 });
+
+    console.log("board writer id : "+ board[0].writer);
+    //console.log("board writer name : "+ board.writer);
 
     res.json({ board, comment });
     //console.log(comment[0].writer);
