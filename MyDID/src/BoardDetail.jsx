@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { Table, Button, Image ,Form } from "react-bootstrap";
+import { Table, Button, Image, Form } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import axios from "axios";
 import $ from "jquery";
@@ -7,80 +7,133 @@ import {} from "jquery.cookie";
 axios.defaults.withCredentials = true;
 const headers = { withCredentials: true };
 
+//게시글 삭제
+const deleteBoard = (_id) => {
+  const send_param = {
+    headers,
+    _id,
+    login_email: $.cookie("login_email"),
+  };
+
+  //if($.cookie("login_id"))
+  if (window.confirm("정말 삭제하시겠습니까?")) {
+    axios
+      .post("http://localhost:8080/board/delete", send_param)
+      //정상 수행
+      .then((returnData) => {
+        alert(returnData.data.message);
+        window.location.href = "/";
+      })
+      //에러
+      .catch((err) => {
+        console.log(err);
+        alert("글 삭제 실패");
+      });
+  }
+};
+
+const marginBottom = {
+  marginBottom: 5,
+  width: 90,
+};
+
+//게시글 삭제 컴포넌트
+function RemoveModifyBtn(props) {
+  return (
+    <tr>
+      <td>
+        <Button
+          block
+          style={marginBottom}
+          onClick={deleteBoard.bind(null, props.location.query._id)}
+        >
+          글 삭제
+        </Button>
+      </td>
+    </tr>
+  );
+}
 //댓글 ROW 컴포넌트
-function CommentRow(props){
+function CommentRow(props) {
   return (
     <tr>
       <td>{props.comment.writer}</td>
       <td>{props.comment.comment}</td>
       <td>
-        <button onClick={()=>props.removeComment(props.comment._id)}>삭제</button>
+        <button onClick={() => props.removeComment(props.comment._id)}>
+          삭제
+        </button>
       </td>
     </tr>
   );
 }
 
 //댓글 컴포넌트
-function CommentList(props){
+function CommentList(props) {
   const divStyle = {
-    margin: 50
+    //width: 900,
+    margin: 50,
   };
+
   return (
     <div style={divStyle}>
-        <Table striped bordered hover>
-            <thead>
-              <tr>
-              <th>댓글작성자</th>
-              <th>댓글내용</th>
-              <th>삭제</th>
-              </tr>
-            </thead>
-            <tbody>
-                {props.comments.map(comment => <CommentRow comment={comment} key={comment._id} removeComment={props.removeComment} />)}
-            </tbody>
-          </Table>
+      <Table striped bordered hover>
+        <thead>
+          <tr>
+            <th>댓글작성자</th>
+            <th>댓글내용</th>
+            <th>삭제</th>
+          </tr>
+        </thead>
+        <tbody>
+          {props.comments.map((comment) => (
+            <CommentRow
+              comment={comment}
+              key={comment._id}
+              removeComment={props.removeComment}
+            />
+          ))}
+        </tbody>
+      </Table>
     </div>
-    
   );
 }
 
 //게시판 상세페이지 컴포넌트
-function BoardDetail(props){
-
+function BoardDetail(props) {
   const [board, setBoard] = useState([]);
   const [comments, setComments] = useState(false);
   const [flag, setFlag] = useState(true);
   const boardTitle = useRef();
 
-   const getCommentList = useCallback(() => {
+  const getCommentList = useCallback(() => {
     axios
-      .post("http://localhost:8080/board/detail","")
-      .then(async returnData => {
+      .post("http://localhost:8080/board/detail", "")
+      .then(async (returnData) => {
         if (returnData.data.comment.length > 0) {
           setComments(returnData.data.comment);
         }
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
-
-
-  },[]);
+  }, []);
 
   //게시글 상세정보 가져오기
   const getDetail = useCallback(() => {
     const send_param = {
       headers,
-      _id: props.location.query._id
+      _id: props.location.query._id,
     };
     const marginBottom = {
-      marginBottom: 5
+      marginBottom: 5,
+      width: 90,
     };
 
     axios
       .post("http://localhost:8080/board/detail", send_param)
       //정상 수행
-      .then(async returnData => {
+      .then(async (returnData) => {
         if (returnData.data.board[0]) {
           if (returnData.data.comment.length > 0) {
             console.log(returnData.data.comment.length);
@@ -104,26 +157,40 @@ function BoardDetail(props){
                 </tbody>
               </Table>
               <div>
-                <NavLink
+                {/* <NavLink
                   to={{
                     pathname: "/boardWrite",
                     query: {
                       title: returnData.data.board[0].title,
                       content: returnData.data.board[0].content,
-                      _id: props.location.query._id
-                    }
+                      _id: props.location.query._id,
+                    },
                   }}
-                >
-                  <Button block style={marginBottom}>
-                    글 수정
-                  </Button>
-                </NavLink>
+                  >
+                  </NavLink> */}
+
+                {/* //////////////////////삼항연산자//////////////////////////// */}
+                {props.writer === $.cookie("login_id") ? (
+                  <RemoveModifyBtn
+                    updateBoard={updateBoard.bind(
+                      null,
+                      props.location.query._id
+                    )}
+                  />
+                ) : (
+                  ""
+                )}
                 <Button
                   block
-                  onClick={deleteBoard.bind(
-                    null,
-                    props.location.query._id
-                  )}
+                  style={marginBottom}
+                  onClick={updateBoard.bind(null, props.location.query._id)}
+                >
+                  글 수정
+                </Button>
+                <Button
+                  block
+                  style={marginBottom}
+                  onClick={deleteBoard.bind(null, props.location.query._id)}
                 >
                   글 삭제
                 </Button>
@@ -137,11 +204,10 @@ function BoardDetail(props){
         }
       })
       //에러
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
-      
-  },[props.location.query, setComments]);
+  }, [props.location.query, setComments]);
 
   //게시판 상세 세팅(초기 랜더링시)
   const setBoardDetail = useCallback(() => {
@@ -152,20 +218,44 @@ function BoardDetail(props){
     }
   }, [props.location.query, getDetail]);
 
-  useEffect(()=>{
-    if(flag){
-      console.log("flag=" + flag );
+  useEffect(() => {
+    if (flag) {
+      console.log("flag=" + flag);
       setBoardDetail();
     }
+  }, [flag, setBoardDetail]);
 
-  },[flag, setBoardDetail]);
-
-  //게시글 삭제
-  const deleteBoard = _id => {
+  //게시글 수정
+  const updateBoard = (_id) => {
     const send_param = {
       headers,
       _id,
-      login_email : $.cookie("login_email")
+      login_email: $.cookie("login_email"),
+    };
+
+    //if($.cookie("login_id"))
+    if (window.confirm("수정할거얌??")) {
+      axios
+        .post("http://localhost:8080/board/update", send_param)
+        //정상 수행
+        .then((returnData) => {
+          alert(returnData.data.message);
+          window.location.href = "/BoardWriteForm.jsx";
+        })
+        //에러
+        .catch((err) => {
+          console.log(err);
+          alert("글 수정 실패");
+        });
+    }
+  };
+
+  //게시글 삭제
+  const deleteBoard = (_id) => {
+    const send_param = {
+      headers,
+      _id,
+      login_email: $.cookie("login_email"),
     };
 
     //if($.cookie("login_id"))
@@ -173,12 +263,12 @@ function BoardDetail(props){
       axios
         .post("http://localhost:8080/board/delete", send_param)
         //정상 수행
-        .then(returnData => {
+        .then((returnData) => {
           alert(returnData.data.message);
           window.location.href = "/";
         })
         //에러
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
           alert("글 삭제 실패");
         });
@@ -186,24 +276,27 @@ function BoardDetail(props){
   };
 
   //댓글 삭제
-  const removeComment = useCallback( _id => {
-    const send_param={
-      headers,
-      _id,
-      login_email : $.cookie("login_email")
-    }
-    axios
-      .post("http://localhost:8080/comment/delete",send_param)
-      .then(returnData=>{
-        alert(returnData.data.message);
-        setComments(returnData.data.comment);
-        setComments(comments.filter(comment => comment._id !== _id));
-      })
-      .catch(err => {
-        console.log(err);
-        alert("글 삭제 실패");
-      });
-  },[setComments, comments]);
+  const removeComment = useCallback(
+    (_id) => {
+      const send_param = {
+        headers,
+        _id,
+        login_email: $.cookie("login_email"),
+      };
+      axios
+        .post("http://localhost:8080/comment/delete", send_param)
+        .then((returnData) => {
+          alert(returnData.data.message);
+          setComments(returnData.data.comment);
+          setComments(comments.filter((comment) => comment._id !== _id));
+        })
+        .catch((err) => {
+          console.log(err);
+          alert("글 삭제 실패");
+        });
+    },
+    [setComments, comments]
+  );
 
   //댓글 등록
   const writeComment = useCallback(() => {
@@ -213,41 +306,54 @@ function BoardDetail(props){
       headers,
       _id: props.location.query._id,
       _comment: boardTitle.current.value,
-      login_email:$.cookie("login_email")      
+      login_email: $.cookie("login_email"),
     };
-    axios
-      .post("http://localhost:8080/board/writecomment", send_param)
+    axios.post("http://localhost:8080/comment/writecomment", send_param);
 
-      getCommentList();
-  },[props.location.query, getCommentList]);
+    getCommentList();
+  }, [props.location.query, getCommentList]);
 
   const titleStyle = {
     marginBottom: 5,
+    //width: 900,
+  };
+  const buttonStyle = {
+    marginBottom: 5,
+    width: 100,
   };
   const divStyle = {
-    margin: 50
+    margin: 50,
   };
-  
+
+  const divStyle2 = {
+    //justifyContent: "space-around",
+    display: "flex",
+    //width: 800,
+    margin: 50,
+  };
+
   return (
-  <>
-    <div style={divStyle}>
-            {board}
-    </div>
-    <Form.Control
-      type="text"
-      style={titleStyle}
-      placeholder="댓글쓰기"
-      ref={boardTitle}
-      />
-    <Button
-      block
-      onClick={writeComment}
-    >
-      댓글작성 
-    </Button>
-    {comments?<CommentList comments={comments} removeComment={removeComment}/>:""}
-  </>);
-  
+    <>
+      <div style={divStyle}>{board}</div>
+      <div style={divStyle2} /*  class="justify-content-center" */>
+        <Form.Control
+          type="text"
+          style={titleStyle}
+          placeholder="댓글쓰기"
+          ref={boardTitle}
+          maxLength="64"
+        />
+        <Button style={buttonStyle} block onClick={writeComment}>
+          댓글작성
+        </Button>
+      </div>
+      {comments ? (
+        <CommentList comments={comments} removeComment={removeComment} />
+      ) : (
+        ""
+      )}
+    </>
+  );
 }
 
 export default BoardDetail;
