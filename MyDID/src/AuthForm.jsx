@@ -32,7 +32,7 @@ function AuthForm(){
   const username = useRef();
   const registerNumber = useRef();
   const [myDIDConfirmForm, setMyDIDConfirmForm] = useState();  
-  const [value, setValue] = useState('https://play.google.com/store/apps/details?id=hamletshu.dhlottery');
+  const [value, setValue] = useState('https://play.google.com/store/apps/details?id=com.hamletshu.mydid.fido2');
   const [dataUrl, setDataURL] = useQrious({ value });
 
   //최초 렌더링 완료시 이메일 세팅
