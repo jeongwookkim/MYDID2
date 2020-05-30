@@ -37,6 +37,7 @@ function RemoveModifyBtn(props) {
 }
 //댓글 ROW 컴포넌트
 function CommentRow(props) {
+  //console.log(props.comment.writer.name);
   return (
     <tr>
       <td>{props.comment.writer}</td>
@@ -86,7 +87,7 @@ function BoardDetail(props) {
   const [board, setBoard] = useState([]);
   const [comments, setComments] = useState(false);
   const [flag, setFlag] = useState(true);
-  const boardTitle = useRef();
+  const commentTitle = useRef();
 
   const getCommentList = useCallback(() => {
     axios
@@ -185,8 +186,6 @@ function BoardDetail(props) {
     const send_param = {
       headers,
       _id,
-      
-      //login_email: $.cookie("login_email"),
     };
 
     //if($.cookie("login_id"))
@@ -214,7 +213,6 @@ function BoardDetail(props) {
       headers,
       _id,
       writer,
-      //login_email: $.cookie("login_email"),
     };
 
     //if($.cookie("login_id"))
@@ -240,14 +238,17 @@ function BoardDetail(props) {
       const send_param = {
         headers,
         _id,
-        login_email: $.cookie("login_email"),
       };
       axios
         .post("http://localhost:8080/comment/delete", send_param)
         .then((returnData) => {
           alert(returnData.data.message);
           setComments(returnData.data.comment);
-          setComments(comments.filter((comment) => comment._id !== _id));
+          if(returnData.data.refresh){
+            setComments(comments);
+          }else{
+            setComments(comments.filter((comment) => comment._id !== _id));
+          }
         })
         .catch((err) => {
           console.log(err);
@@ -264,10 +265,12 @@ function BoardDetail(props) {
     const send_param = {
       headers,
       _id: props.location.query._id,
-      _comment: boardTitle.current.value,
-      //login_email: $.cookie("login_email"),
+      _comment: commentTitle.current.value,
     };
-    axios.post("http://localhost:8080/comment/writecomment", send_param);
+    axios.post("http://localhost:8080/comment/writecomment", send_param)
+    .then((returnData)=>{
+      alert(returnData.data.message);
+    })
 
     getCommentList();
   }, [props.location.query, getCommentList]);
@@ -299,7 +302,7 @@ function BoardDetail(props) {
           type="text"
           style={titleStyle}
           placeholder="댓글쓰기"
-          ref={boardTitle}
+          ref={commentTitle}
           maxLength="64"
         />
         <Button style={buttonStyle} block onClick={writeComment}>

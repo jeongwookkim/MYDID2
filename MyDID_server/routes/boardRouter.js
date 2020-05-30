@@ -65,9 +65,7 @@ router.post("/update", upload.single("imgFile"), async (req, res) => {
     console.log("session id : "+req.session._id);
     const board = await Board.find({ _id }).populate("writer");
     console.log("update board : "+ board[0].writer._id);
-  
-    if(board[0].writer._id===req.session._id){
-      if (file == undefined) {
+        if (file == undefined) {
         await Board.update(
           { _id: req.session._id },
           {
@@ -95,10 +93,6 @@ router.post("/update", upload.single("imgFile"), async (req, res) => {
       }
 
       res.json({ message: "게시글이 수정 되었습니다." });
-
-    }else{
-      res.json({ message: "내가 쓴 글만 수정가능" });
-    }
   } catch (err) {
     console.log(err);
     res.json({ message: false });
@@ -161,7 +155,7 @@ router.post("/detail", async (req, res) => {
     const board = await Board.find({ _id }).populate("writer");
     const comment = await Comment.find({}).sort({ createdAt: -1 });
 
-    console.log("board writer id : "+ board[0].writer);
+    //console.log("board writer id : "+ board[0].writer);
     //console.log("board writer name : "+ board.writer);
 
     res.json({ board, comment });

@@ -5,6 +5,10 @@ const {
   Types: { ObjectId }
 } = Schema;
 const commentSchema = new Schema({
+  board_id:{
+    type: String,
+    required: true
+  },
   writer: {
     type: String,
     required: true
