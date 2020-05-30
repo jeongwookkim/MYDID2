@@ -19,11 +19,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="viewModel"
             type="com.hamletshu.mydid.fido2.ui.home.HomeViewModel" />
-
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -42,12 +40,12 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/spacing_medium"
                 android:gravity="center"
-                android:text="My DID 목록"
+                android:text="MyDID 등록 및 인증"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="Welcome, John!" />
+                />
 
             <TextView
                 android:id="@+id/credentials_caption"
