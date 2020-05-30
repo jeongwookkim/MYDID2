@@ -59,7 +59,7 @@
                 android:id="@+id/input_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="비밀번호"
+                android:hint="인증번호"
                 android:inputType="textPassword"
                 android:maxLines="1"
                 android:text="@={viewModel.password}" />
@@ -73,7 +73,7 @@
             android:layout_marginStart="@dimen/spacing_large"
             android:layout_marginTop="@dimen/spacing_medium"
             android:layout_marginEnd="@dimen/spacing_large"
-            android:text="MY DID를 생성할 비밀번호를 입력해주세요."
+            android:text="MY DID를 생성할 인증번호를 입력해주세요."
             android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

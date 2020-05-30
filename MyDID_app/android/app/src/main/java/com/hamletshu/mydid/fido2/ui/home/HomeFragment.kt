@@ -74,10 +74,10 @@ class HomeFragment : Fragment(), DeleteConfirmationFragment.Listener {
         binding.appBar.replaceMenu(R.menu.home)
         binding.appBar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
-                R.id.action_reauth -> {
+/*                R.id.action_reauth -> {
                     viewModel.reauth()
                     true
-                }
+                }*/
                 R.id.action_sign_out -> {
                     viewModel.signOut()
                     true

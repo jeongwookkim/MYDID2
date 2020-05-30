@@ -39,4 +39,7 @@
     <string name="delete">Delete</string>
     <string name="delete_confirmation">Are you sure you want to delete this credential?\n\n%s</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>
