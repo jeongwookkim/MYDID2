@@ -219,7 +219,6 @@ function AuthForm(){
       </Form>
     </>);
   }
-  
 }
 
 export default AuthForm;

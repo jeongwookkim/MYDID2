@@ -14,7 +14,7 @@ router.post("/join", async (req, res) => {
     if (user) {
       res.json({
         message: "이메일이 중복되었습니다. 새로운 이메일을 입력해주세요.",
-        dupYn: "1"
+        dupYn: "1",
       });
     } else {
       crypto.randomBytes(64, (err, buf) => {
@@ -37,7 +37,7 @@ router.post("/join", async (req, res) => {
                   email: req.body.email,
                   name: req.body.name,
                   password: key.toString("base64"),
-                  salt: buf.toString("base64")
+                  salt: buf.toString("base64"),
                 };
                 user = new User(obj);
                 await user.save();
@@ -81,7 +81,7 @@ router.post("/login", async (req, res) => {
 
                 const obj = {
                   email: req.body.email,
-                  password: key.toString("base64")
+                  password: key.toString("base64"),
                 };
 
                 const user2 = await User.findOne(obj);
@@ -91,13 +91,13 @@ router.post("/login", async (req, res) => {
                   // console.log(req.body._id);
                   await User.updateOne(
                     {
-                      email: req.body.email
+                      email: req.body.email,
                     },
                     { $set: { loginCnt: 0 } }
                   );
                   req.session.email = user2.email;
                   req.session.auth = user2.auth;
-
+                  req.session._id = user2._id;
                   res.json({
                     message: "로그인 되었습니다!",
                     _id: user2._id,
@@ -109,29 +109,29 @@ router.post("/login", async (req, res) => {
                   if (user.loginCnt > 4) {
                     res.json({
                       message:
-                        "아이디나 패스워드가 5회 이상 일치하지 않아 잠겼습니다.\n고객센터에 문의 바랍니다."
+                        "아이디나 패스워드가 5회 이상 일치하지 않아 잠겼습니다.\n고객센터에 문의 바랍니다.",
                     });
                   } else {
                     await User.updateOne(
                       {
-                        email: req.body.email
+                        email: req.body.email,
                       },
                       { $set: { loginCnt: user.loginCnt + 1 } }
                     );
                     if (user.loginCnt >= 5) {
                       await User.updateOne(
                         {
-                          email: req.body.email
+                          email: req.body.email,
                         },
                         { $set: { lockYn: true } }
                       );
                       res.json({
                         message:
-                          "아이디나 패스워드가 5회 이상 일치하지 않아 잠겼습니다.\n고객센터에 문의 바랍니다."
+                          "아이디나 패스워드가 5회 이상 일치하지 않아 잠겼습니다.\n고객센터에 문의 바랍니다.",
                       });
                     } else {
                       res.json({
-                        message: "아이디나 패스워드가 일치하지 않습니다."
+                        message: "아이디나 패스워드가 일치하지 않습니다.",
                       });
                     }
                   }
@@ -160,7 +160,7 @@ router.get("/logout", (req, res) => {
 router.post("/delete", async (req, res) => {
   try {
     await User.remove({
-      _id: req.body._id
+      _id: req.body._id,
     });
     res.json({ message: true });
   } catch (err) {
@@ -173,7 +173,7 @@ router.post("/update", async (req, res) => {
   try {
     await User.update({
       _id: req.body._id,
-      name: req.body.name
+      name: req.body.name,
     });
     res.json({ message: true });
   } catch (err) {
