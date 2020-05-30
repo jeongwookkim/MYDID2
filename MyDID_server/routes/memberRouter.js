@@ -96,18 +96,13 @@ router.post("/login", async (req, res) => {
                     { $set: { loginCnt: 0 } }
                   );
                   req.session.email = user2.email;
+                  req.session.auth = user2.auth;
                   req.session._id = user2._id;
-
-
-                  console.log("session : "+req.session._id);
-                  
-
-                  //console.log(user);
-                  //console.log(user2);
                   res.json({
                     message: "로그인 되었습니다!",
                     _id: user2._id,
                     email: user2.email,
+                    auth:user2.auth
                   });
                 } else {
                   //없으면 로그인 실패횟수 추가

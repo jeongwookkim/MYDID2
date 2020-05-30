@@ -149,6 +149,7 @@ function LoginForm() {
           // console.log("login_id:" + returnData.data._id);
           $.cookie("login_id", returnData.data._id, { expires: 1 });
           $.cookie("login_email", returnData.data.email, { expires: 1 });
+          $.cookie("auth", returnData.data.auth, { expires: 1 });
           alert(returnData.data.message);
           window.location.reload();
         } else {

@@ -13,13 +13,10 @@ function Body() {
   let resultForm;
   function getResultForm() {
     if ($.cookie("login_id") !== undefined) {
-      console.log("logined");
-      console.log($.cookie("auth_ok"));
-      console.log($.cookie("auth_ok") === "1234567890");
-      if ($.cookie("auth_ok") !== undefined) {
+      if ($.cookie("auth") === '2') {
         resultForm = <Route exact path="/" component={BoardForm}></Route>;
         return resultForm;
-      } else {
+      } else if($.cookie("auth") === '0' || $.cookie("auth") === '1') {
         resultForm = <Route exact path="/" component={AuthForm}></Route>;
         return resultForm;
       }
