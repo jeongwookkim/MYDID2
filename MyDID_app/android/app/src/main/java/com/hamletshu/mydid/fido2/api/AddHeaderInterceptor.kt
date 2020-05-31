@@ -19,6 +19,12 @@ package com.hamletshu.mydid.fido2.api
 import okhttp3.Interceptor
 import okhttp3.Response
 
+/*
+* 실행시마다 항상 같은 쿠키값을 유지하는 방법
+* 1. 로그인한뒤 받은 Response에서 쿠키정보를 가져온다.
+2. 가져온 쿠키정보를 안드로이드의 SharedPreferences에 저장해둔다.
+3. 이후 수행되는 Request마다 SharedPreferences에서 쿠키를 가져와서 Header에 추가해서 보낸다.
+* */
 internal class AddHeaderInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         return chain.proceed(

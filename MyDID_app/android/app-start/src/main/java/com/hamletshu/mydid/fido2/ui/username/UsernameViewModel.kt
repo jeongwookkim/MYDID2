@@ -23,6 +23,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import com.hamletshu.mydid.fido2.repository.AuthRepository
 
+//UI에 데이터를 제공하는 역할을 합니다. Repository와 UI 사이에서 커뮤니케이션 센터 역할
 class UsernameViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository = AuthRepository.getInstance(application)

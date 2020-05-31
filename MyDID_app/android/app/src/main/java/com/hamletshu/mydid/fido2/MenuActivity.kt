@@ -31,6 +31,7 @@ class MenuActivity : AppCompatActivity() {
         val FIDOInsertBtn = findViewById(R.id.FIDOInsertBtn) as Button
         val FIDOListBtn = findViewById(R.id.FIDOListBtn) as Button
 //        val changyouBtn = findViewById(R.id.changyouBtn) as Button
+
         FIDOInsertBtn.setOnClickListener {
             val intent = Intent(this@MenuActivity, MainActivity::class.java)
             startActivity(intent)
