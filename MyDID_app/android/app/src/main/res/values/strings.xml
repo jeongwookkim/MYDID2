@@ -19,25 +19,25 @@
 
     <!-- Username -->
     <eat-comment />
-    <string name="sign_in">Sign In</string>
-    <string name="username">Username</string>
-    <string name="sign_in_explanation">For the purpose of demonstration, this app accepts any username.</string>
-    <string name="next">Next</string>
+    <string name="sign_in">로그인</string>
+    <string name="username">아이디</string>
+    <string name="sign_in_explanation">데모 목적으로이 앱은 모든 사용자 이름을 허용합니다.</string>
+    <string name="next">다음</string>
 
     <!-- Auth -->
     <eat-comment />
     <string name="welcome">Welcome, %s!</string>
-    <string name="auth_explanation">For the purpose of demonstration, the password you type is ignored.</string>
-    <string name="password">Password</string>
-    <string name="cancelled">Cancelled</string>
+    <string name="auth_explanation">설명을 위해 입력한 인증번호는 무시됩니다.</string>
+    <string name="password">인증번호</string>
+    <string name="cancelled">취소됨</string>
 
     <!-- Home -->
-    <string name="credentials_caption">Your registered credentials:</string>
-    <string name="empty_credentials">You don\'t have any credentials.</string>
-    <string name="reauth">Reauth</string>
-    <string name="sign_out">Sign Out</string>
-    <string name="delete">Delete</string>
-    <string name="delete_confirmation">Are you sure you want to delete this credential?\n\n%s</string>
+    <string name="credentials_caption">등록된 자격증명</string>
+    <string name="empty_credentials">자격 증명이 없습니다.</string>
+    <string name="reauth">재인증</string>
+    <string name="sign_out">로그아웃</string>
+    <string name="delete">삭제</string>
+    <string name="delete_confirmation">이 자격 증명을 삭제 하시겠습니까?\n\n%s</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

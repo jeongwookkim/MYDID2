@@ -21,6 +21,7 @@ import androidx.lifecycle.AndroidViewModel
 import com.hamletshu.mydid.fido2.repository.AuthRepository
 import com.google.android.gms.fido.fido2.Fido2ApiClient
 
+//UI에 데이터를 제공하는 역할을 합니다. Repository와 UI 사이에서 커뮤니케이션 센터 역할
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository = AuthRepository.getInstance(application)

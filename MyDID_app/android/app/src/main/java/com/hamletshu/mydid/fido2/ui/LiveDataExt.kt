@@ -20,6 +20,8 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 
+//관측가능한(Observed한) 데이터 홀더
+//항상 마지막 상태의 데이터를 보관하고 있으며, 상태가 변하면 구독자들에게 변화된 데이터를 전달해주는 역할
 fun <T> LiveData<T>.observeOnce(lifecycleOwner: LifecycleOwner, onChanged: (T) -> Unit) {
     val observer = object : Observer<T> {
         override fun onChanged(t: T) {

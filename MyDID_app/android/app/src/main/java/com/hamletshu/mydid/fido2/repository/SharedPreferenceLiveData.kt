@@ -19,6 +19,9 @@ package com.hamletshu.mydid.fido2.repository
 import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 
+//관측가능한(Observed한) 데이터 홀더
+//항상 마지막 상태의 데이터를 보관하고 있으며, 상태가 변하면 구독자들에게 변화된 데이터를 전달해주는 역할
+
 fun SharedPreferences.liveString(key: String, defaultValue: String): LiveData<String> {
     return SharedPreferenceLiveData(this, key, defaultValue, SharedPreferences::getString)
 }
@@ -47,6 +50,7 @@ fun SharedPreferences.liveStringSet(key: String, defaultValue: Set<String>): Liv
     return SharedPreferenceLiveData(this, key, defaultValue, SharedPreferences::getStringSet)
 }
 
+//SharedPreferences API는 키-값 쌍을 읽고 쓰는 용도로 사용됩니다.
 internal class SharedPreferenceLiveData<T>(
     private val prefs: SharedPreferences,
     private val key: String,
