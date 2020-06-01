@@ -49,16 +49,16 @@ function AuthForm(){
     };
 
     axios
-      .post("https://mydid.kro.kr/auth/register", send_param)
+      .post("http://localhost:8080/auth/register", send_param)
       .then(returnData =>{
-        if (returnData.data.message) {
+        if (returnData.data.code === '200') {
           alert(returnData.data.message);
           setMyDIDConfirmForm(<MyDIDConfirmForm action={insertConfirmMyDID} dataUrl={dataUrl}/>);
         } else {
           alert(returnData.data.message);
         }
       })
-    //에러
+     //에러
       .catch(err => {
         console.log(err);
       });
@@ -73,24 +73,15 @@ function AuthForm(){
     };
     
     axios
-    .post("https://mydid.kro.kr/auth/confirmregister", send_param)
+    .post("http://localhost:8080/auth/confirmregister", send_param)
     .then(returnData =>{
-      if(returnData.data.message){
-        axios
-        .post("http://localhost:8080/auth", send_param)
-        .then(returnData2 =>{
-          if (returnData2.data.message) {
-            $.cookie("auth", returnData2.data.auth, { expires: 1 });
-            alert(returnData.data.message);
-            window.location.reload();
-          } else {
-            alert(returnData.data.message);
-          }
-        })
-      //에러
-        .catch(err => {
-          console.log(err);
-        });
+      if(returnData.data.auth === '1'){
+        $.cookie("auth", returnData.data.auth, { expires: 1 });
+        alert(returnData.data.message);
+        window.location.reload();
+      } else {
+        alert(returnData.data.message);
+        window.location.reload();
       }
     })
     //에러
@@ -108,13 +99,14 @@ function AuthForm(){
     };
 
     axios
-      .post("https://mydid.kro.kr/auth/registersignin", send_param)
+      .post("http://localhost:8080/auth/registersignin", send_param)
       .then(returnData =>{
-        if (returnData.data.message) {
+        if (returnData.data.auth='1') {
           alert(returnData.data.message);
           setMyDIDConfirmForm(<MyDIDConfirmForm action={loginConfirmMyDID} dataUrl={dataUrl}/>);
         } else {
           alert(returnData.data.message);
+          window.location.reload();
         }
       })
     //에러
@@ -132,10 +124,14 @@ function AuthForm(){
     };
 
     axios
-      .post("https://mydid.kro.kr/auth/confirmsiginin", send_param)
+      .post("http://localhost:8080/auth/confirmsignin", send_param)
       .then(returnData =>{
-        $.cookie("auth", '2', { expires: 1 });
-        alert(returnData.data.message);
+        if(returnData.data.key){
+          $.cookie("auth", '2', { expires: 1 });
+          alert(returnData.data.message);
+        }else{
+          alert(returnData.data.message);
+        }
         window.location.reload();
       })
     //에러
