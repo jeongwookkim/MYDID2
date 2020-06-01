@@ -17,7 +17,7 @@ const MypageForm = () => {
       <div style={divStyle}>
       <Form.Group controlId="formBasicEmail">
         <Form.Label>email</Form.Label>
-        <Form.Control type="email" disabled value={$.cookie("login_email")}/>
+        <Form.Control type="email" disabled value={sessionStorage.getItem('login_email')}/>
         <Form.Label>name</Form.Label>
         <Form.Control type="text" placeholder="Enter email" />
         <Form.Label>password</Form.Label>

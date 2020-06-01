@@ -9,8 +9,6 @@ axios.defaults.withCredentials = true;
 const headers = { withCredentials: true };
 
 function BoardRow(props) {
-  console.log("$.cookie(login_id):" + $.cookie("login_id"));
-  console.log("props.writer:" + props.writer);
 
   return (
     <tr>
@@ -43,8 +41,8 @@ function BoardForm(props) {
   const getBoardList = () => {
     const send_param = {
       headers,
-      _id: $.cookie("login_id"),
-      email:$.cookie("login_email")
+      _id: sessionStorage.getItem('login_id'),
+      email:sessionStorage.getItem('login_email')
     };
 
     axios

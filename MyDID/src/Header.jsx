@@ -15,7 +15,7 @@ function Header() {
   }, []);
 
   function getButtonStyle() {
-    if ($.cookie("login_id")) {
+    if (sessionStorage.getItem('login_id')) {
       setButtonDisplay("block");
     } else {
       setButtonDisplay("none");
@@ -27,8 +27,7 @@ function Header() {
       .get("http://localhost:8080/member/logout", { headers })
       .then((returnData) => {
         if (returnData.data.message) {
-          $.removeCookie("login_id");
-          $.removeCookie("auth");
+          sessionStorage.clear();
           alert("로그아웃 되었습니다!");
           window.location.href = "/";
         }
