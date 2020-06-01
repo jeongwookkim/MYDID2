@@ -28,6 +28,7 @@ function Header() {
       .then((returnData) => {
         if (returnData.data.message) {
           $.removeCookie("login_id");
+          $.removeCookie("auth");
           alert("로그아웃 되었습니다!");
           window.location.href = "/";
         }
