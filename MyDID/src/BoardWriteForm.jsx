@@ -30,9 +30,8 @@ function BoardWriteForm(props){
     const imgExp = /([^\s]+(?=\.(jpg|gif|png|JPG|GIF|PNG))\.\2)/;
 
     const formData = new FormData();
-
     formData.append("headers", headers);
-    formData.append("_id", $.cookie("login_id"));
+    formData.append("_id", sessionStorage.getItem('login_id'));
     formData.append("title", boardTitle.current.value);
     formData.append("content", boardContent.current.value);
 

@@ -137,7 +137,7 @@ function BoardDetail(props) {
                     <td>{returnData.data.board[0].content}</td>
                   </tr>
                 {/* //////////////////////삼항연산자//////////////////////////// */}
-                {props.location.query.writer === $.cookie("login_id") ? (
+                {props.location.query.writer === sessionStorage.getItem('login_id') ? (
                   <RemoveModifyBtn
                     updateBoard={updateBoard.bind(
                       null,
@@ -188,8 +188,7 @@ function BoardDetail(props) {
       _id,
     };
 
-    //if($.cookie("login_id"))
-    if (window.confirm("수정할거얌??")) {
+    if (window.confirm("수정 하시겠습니까?")) {
       axios
         .post("http://localhost:8080/board/update", send_param)
         //정상 수행
@@ -215,7 +214,6 @@ function BoardDetail(props) {
       writer,
     };
 
-    //if($.cookie("login_id"))
     if (window.confirm("정말 삭제하시겠습니까?")) {
       axios
         .post("http://localhost:8080/board/delete", send_param)

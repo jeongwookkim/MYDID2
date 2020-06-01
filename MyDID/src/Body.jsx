@@ -12,11 +12,13 @@ import {} from "jquery.cookie";
 function Body() {
   let resultForm;
   function getResultForm() {
-    if ($.cookie("login_id") !== undefined) {
-      if ($.cookie("auth") === '2') {
+    console.log(sessionStorage);
+    console.log(sessionStorage.getItem('login_id'));
+    if (sessionStorage.getItem('login_id')) {
+      if (sessionStorage.getItem('auth') === '2') {
         resultForm = <Route exact path="/" component={BoardForm}></Route>;
         return resultForm;
-      } else if($.cookie("auth") === '0' || $.cookie("auth") === '1') {
+      } else if(sessionStorage.getItem('auth') === '0' || sessionStorage.getItem('auth') === '1') {
         resultForm = <Route exact path="/" component={AuthForm}></Route>;
         return resultForm;
       }
