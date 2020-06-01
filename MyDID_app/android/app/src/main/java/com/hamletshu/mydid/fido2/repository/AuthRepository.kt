@@ -40,6 +40,7 @@ import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 
 /**
+ * 싱글톤 패턴으로 뷰모델마다 동일한 Repository 인스턴스로 접근하여 데이터를 로드하도록 도와줍
  * API, 로컬 데이터 저장소 및 FIDO2 API와 함께 작동합니다.
   * Works with the API, the local data store, and FIDO2 API.
  */
@@ -52,6 +53,7 @@ class AuthRepository(
     companion object {
         private const val TAG = "AuthRepository"
 
+        //SharedPreferences의 키
         // Keys for SharedPreferences
         private const val PREFS_NAME = "auth"
         private const val PREF_USERNAME = "username"
@@ -166,7 +168,7 @@ class AuthRepository(
                 prefs.edit(commit = true) { putString(PREF_TOKEN, token) }
                 invokeSignInStateListeners(SignInState.SignedIn(username, token))
             } catch (e: ApiException) {
-                Log.e(TAG, "Invalid login credentials", e)
+                Log.e(TAG, "로그인 자격 증명이 잘못되었습니다.", e)
 
                 // start login over again
                 prefs.edit(commit = true) {
@@ -176,7 +178,7 @@ class AuthRepository(
                 }
 
                 invokeSignInStateListeners(
-                    SignInState.SignInError(e.message ?: "Invalid login credentials" ))
+                    SignInState.SignInError(e.message ?: "사용자 로그인에 실패했습니다." ))
             } finally {
                 processing.postValue(false)
             }
@@ -269,7 +271,7 @@ class AuthRepository(
                     val task: Task<Fido2PendingIntent> = client.getRegisterIntent(options)
                     result.postValue(Tasks.await(task))
                 } catch (e: Exception) {
-                    Log.e(TAG, "Cannot call registerRequest", e)
+                    Log.e(TAG, "registerRequest를 호출할 수 없습니다.", e)
                 } finally {
                     processing.postValue(false)
                 }
@@ -300,7 +302,7 @@ class AuthRepository(
                     putString(PREF_LOCAL_CREDENTIAL_ID, credentialId)
                 }
             } catch (e: ApiException) {
-                Log.e(TAG, "Cannot call registerResponse", e)
+                Log.e(TAG, "registerResponse를 호출할 수 없습니다.", e)
             } finally {
                 processing.postValue(false)
             }
@@ -319,7 +321,7 @@ class AuthRepository(
                 api.removeKey(token, credentialId)
                 refreshCredentials()
             } catch (e: ApiException) {
-                Log.e(TAG, "Cannot call removeKey", e)
+                Log.e(TAG, "removeKey를 호출 할 수 없습니다", e)
             } finally {
                 processing.postValue(false)
             }
@@ -376,7 +378,7 @@ class AuthRepository(
                 }
                 invokeSignInStateListeners(SignInState.SignedIn(username, token))
             } catch (e: ApiException) {
-                Log.e(TAG, "Cannot call registerResponse", e)
+                Log.e(TAG, "registerResponse를 호출할 수 없습니다.", e)
             } finally {
                 processing.postValue(false)
             }

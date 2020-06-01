@@ -34,12 +34,14 @@ import com.google.android.gms.fido.fido2.api.common.AuthenticatorErrorResponse
 
 class MainActivity : AppCompatActivity() {
 
+    //companion object는 static는 아니지만 사용하는 입장에서 static으로 동작하는 것과 비슷함
     companion object {
         private const val TAG = "MainActivity"
         const val REQUEST_FIDO2_REGISTER = 1
         const val REQUEST_FIDO2_SIGNIN = 2
     }
 
+    //UI에 데이터를 제공하는 역할
     private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,6 +69,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    //사용자가 후속 활동을 마치고 돌아오면 시스템은 활동의 onActivityResult() 메서드를 호출
+    //시작한 활동이 종료 될 때 호출되어 시작한 requestCode, 리턴 한 resultCode 및 추가 데이터를 제공합니다.
+    //requestCode int: 원래 startActivityForResult ()에 제공된 정수 요청 코드로이 결과의 출처를 식별 할 수 있습니다.
+    //resultCode int: setResult ()를 통해 하위 활동이 리턴 한 정수 결과 코드.
+    //data Intent: 호출자에게 결과 데이터를 리턴 할 수있는 Intent (다양한 데이터는 Intent "extras"에 첨부 될 수 있음).
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when (requestCode) {
             //등록

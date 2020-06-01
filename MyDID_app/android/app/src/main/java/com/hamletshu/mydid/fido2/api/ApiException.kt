@@ -16,4 +16,5 @@
 
 package com.hamletshu.mydid.fido2.api
 
+//ApiException 사용자 정의 예외처리
 class ApiException(message: String) : RuntimeException(message)

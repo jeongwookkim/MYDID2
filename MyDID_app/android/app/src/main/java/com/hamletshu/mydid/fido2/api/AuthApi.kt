@@ -77,7 +77,7 @@ class AuthApi {
         )
         val response = call.execute()
         if (!response.isSuccessful) {
-            throwResponseError(response, "Error calling /username")
+            throwResponseError(response, "/username 호출 오류")
         }
 
         //쿠키 세팅
@@ -105,7 +105,7 @@ class AuthApi {
         )
         val response = call.execute()
         if (!response.isSuccessful) {
-            throwResponseError(response, "Error calling /password")
+            throwResponseError(response, "/password 호출 오류")
         }
         val cookie = findSetCookieInResponse(response, "signed-in")
         return "$cookie; username=$username"
@@ -127,9 +127,9 @@ class AuthApi {
         )
         val response = call.execute()
         if (!response.isSuccessful) {
-            throwResponseError(response, "Error calling /getKeys")
+            throwResponseError(response, "/getKeys 호출 오류")
         }
-        val body = response.body() ?: throw ApiException("Empty response from /getKeys")
+        val body = response.body() ?: throw ApiException("/getKeys 응답이 없음")
         return parseUserCredentials(body)
     }
 
@@ -159,9 +159,9 @@ class AuthApi {
         )
         val response = call.execute()
         if (!response.isSuccessful) {
-            throwResponseError(response, "Error calling /registerRequest")
+            throwResponseError(response, "/registerRequest 호출 오류")
         }
-        val body = response.body() ?: throw ApiException("Empty response from /registerRequest")
+        val body = response.body() ?: throw ApiException("/registerRequest 응답이 없음")
         return parsePublicKeyCredentialCreationOptions(body)
     }
 
@@ -206,9 +206,9 @@ class AuthApi {
         )
         val apiResponse = call.execute()
         if (!apiResponse.isSuccessful) {
-            throwResponseError(apiResponse, "Error calling /registerResponse")
+            throwResponseError(apiResponse, "/registerResponse 호출 오류")
         }
-        val body = apiResponse.body() ?: throw ApiException("Empty response from /registerResponse")
+        val body = apiResponse.body() ?: throw ApiException("/registerResponse 응답이 없음")
         return parseUserCredentials(body)
     }
 
@@ -228,7 +228,7 @@ class AuthApi {
         )
         val response = call.execute()
         if (!response.isSuccessful) {
-            throwResponseError(response, "Error calling /removeKey")
+            throwResponseError(response, "/removeKey 호출 오류")
         }
         // Nothing useful in the response body; ignore.
     }
@@ -265,9 +265,9 @@ class AuthApi {
         )
         val response = call.execute()
         if (!response.isSuccessful) {
-            throwResponseError(response, "Error calling /signinRequest")
+            throwResponseError(response, "/signinRequest 호출 오류")
         }
-        val body = response.body() ?: throw ApiException("Empty response from /signinRequest")
+        val body = response.body() ?: throw ApiException("/signinRequest에서 응답이 없음")
         return parsePublicKeyCredentialRequestOptions(body)
     }
 
@@ -312,9 +312,9 @@ class AuthApi {
         )
         val apiResponse = call.execute()
         if (!apiResponse.isSuccessful) {
-            throwResponseError(apiResponse, "Error calling /signingResponse")
+            throwResponseError(apiResponse, "/signingResponse 호출 오류")
         }
-        val body = apiResponse.body() ?: throw ApiException("Empty response from /signinResponse")
+        val body = apiResponse.body() ?: throw ApiException("/ signinResponse 응답이 없음")
         val cookie = findSetCookieInResponse(apiResponse, "signed-in")
         return parseUserCredentials(body) to "$cookie; username=$username"
     }
@@ -494,7 +494,7 @@ class AuthApi {
         val start = cookie.indexOf("username=")
         val end = cookie.indexOf(";")
         if (start < 0 || end < 0 || start + 9 >= end) {
-            throw RuntimeException("Cannot parse the cookie")
+            throw RuntimeException("쿠키를 파싱 할 수 없습니다.")
         }
         return cookie.substring(start + 9, end)
     }
@@ -535,7 +535,7 @@ class AuthApi {
             }
             reader.endObject()
         }
-        throw ApiException("Cannot parse credentials")
+        throw ApiException("자격 증명을 파싱할 수 없습니다.")
     }
 
     private fun throwResponseError(response: Response, message: String): Nothing {
@@ -567,7 +567,7 @@ class AuthApi {
                 reader.endObject()
             }
         } catch (e: Exception) {
-            throw ApiException("Cannot parse error: $errorString")
+            throw ApiException("오류를 파싱 할 수 없습니다: $errorString")
         }
         return "" // Don't throw; this method is called during throwing.
     }
@@ -588,6 +588,6 @@ class AuthApi {
                 return header
             }
         }
-        throw ApiException("Cookie not found: $cname");
+        throw ApiException("쿠키를 찾을 수 없습니다: $cname");
     }
 }

@@ -17,6 +17,9 @@
 package com.hamletshu.mydid.fido2.repository
 
 /**
+ * 데이터 클래스(Data class)는 데이터 보관 목적으로 만든 클래스
+ * 데이터 클래스는 프로퍼티에 대한 toString(), hashCode(), equals(), copy() 메소드를 자동으로 만들어 줍니다. 그래서 boilerplate code를 만들지 않아도 됩니다.
+ * 사용자의 로그인 / 아웃 상태를 나타냅니다. 앱에서 화면을 탐색하는 데 사용됩니다.
  * Represents the sign in/out state of the user. Used to navigate between screens in the app.
  */
 sealed class SignInState {

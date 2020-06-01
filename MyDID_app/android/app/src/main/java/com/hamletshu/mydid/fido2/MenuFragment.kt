@@ -16,19 +16,14 @@
 
 package com.hamletshu.mydid.fido2
 
-import android.R.attr
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
-import com.hamletshu.mydid.fido2.ui.auth.AuthFragment
-import com.hamletshu.mydid.fido2.ui.home.HomeFragment
 import com.hamletshu.mydid.fido2.ui.username.UsernameFragment
 import kotlinx.android.synthetic.main.fragment_menu.view.*
-
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -61,8 +56,6 @@ class MenuFragment : Fragment() {
     ): View? {
 
         val view: View = inflater.inflate(R.layout.fragment_menu, container, false)
-        //FragmentManager fm = this.context;
-        var intent : Intent
 
         view.FIDOInsertBtn.setOnClickListener { view ->
             val fragment = UsernameFragment()

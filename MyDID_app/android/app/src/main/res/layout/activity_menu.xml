@@ -32,17 +32,17 @@
             android:orientation="vertical"
             android:gravity="center"
             android:layout_weight="1">
-            <!--<ImageView
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/logo"/>-->
-            <TextView
+                android:src="@drawable/mydid_logo"/>
+           <!-- <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center|center_vertical"
                 android:textSize="90sp"
                 android:textColor="#6495ed"
-                android:text="MY DID"/>
+                android:text="MY DID"/>-->
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -97,7 +97,4 @@
                 android:text="강창유 그는 누구인가?"/>-->
         </LinearLayout>
     </LinearLayout>
-
-
-
 </FrameLayout>
