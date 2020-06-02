@@ -14,16 +14,19 @@ const marginBottom = {
 
 //게시글 삭제 컴포넌트
 function RemoveModifyBtn(props) {
+  console.log(props._id+" : "+ props.content);
   return (
     <tr>
       <td>
+      <NavLink
+          to={{ pathname: "/BoardWrite", query: {_id:props._id, title:props.title, content:props.content}}}>
         <Button
           block
           style={marginBottom}
-          onClick={props.updateBoard}
         >
           글 수정
         </Button>
+      </NavLink>
         <Button
           block
           style={marginBottom}
@@ -137,8 +140,11 @@ function BoardDetail(props) {
                     <td>{returnData.data.board[0].content}</td>
                   </tr>
                 {/* //////////////////////삼항연산자//////////////////////////// */}
-                {props.location.query.writer === $.cookie("login_id") ? (
+                {props.location.query.writer === sessionStorage.getItem('login_id') ? (
                   <RemoveModifyBtn
+                    _id={props.location.query._id}
+                    title={returnData.data.board[0].title}
+                    content = {returnData.data.board[0].content}
                     updateBoard={updateBoard.bind(
                       null,
                       props.location.query._id, props.location.query.writer
@@ -188,14 +194,12 @@ function BoardDetail(props) {
       _id,
     };
 
-    //if($.cookie("login_id"))
-    if (window.confirm("수정할거얌??")) {
+    if (window.confirm("수정 하시겠습니까?")) {
       axios
         .post("http://localhost:8080/board/update", send_param)
         //정상 수행
         .then((returnData) => {
-          alert(returnData.data.message);
-          window.location.href = "/BoardWriteForm.jsx";
+          alert(returnData.data.data);
         })
         //에러
         .catch((err) => {
@@ -215,7 +219,6 @@ function BoardDetail(props) {
       writer,
     };
 
-    //if($.cookie("login_id"))
     if (window.confirm("정말 삭제하시겠습니까?")) {
       axios
         .post("http://localhost:8080/board/delete", send_param)

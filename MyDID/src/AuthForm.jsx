@@ -37,14 +37,14 @@ function AuthForm(){
 
   //최초 렌더링 완료시 이메일 세팅
   useEffect(()=>{
-    username.current.value = $.cookie("login_email");
+    username.current.value = sessionStorage.getItem('login_email');
   },[]);
 
   //MyDID 최초 발급 시 인증하기 버튼 클릭시 계정 생성
   const insertMyDID = () =>{
     const send_param = {
       headers,
-      username: $.cookie("login_email"),
+      username: sessionStorage.getItem('login_email'),
       registerNumber: registerNumber.current.value
     };
 
@@ -68,7 +68,7 @@ function AuthForm(){
   const insertConfirmMyDID = ()=>{
     const send_param = {
       headers,
-      username: $.cookie("login_email"),
+      username: sessionStorage.getItem('login_email'),
       registerNumber: registerNumber.current.value
     };
     
@@ -76,7 +76,7 @@ function AuthForm(){
     .post("http://localhost:8080/auth/confirmregister", send_param)
     .then(returnData =>{
       if(returnData.data.auth === '1'){
-        $.cookie("auth", returnData.data.auth, { expires: 1 });
+        sessionStorage.setItem('auth', returnData.data.auth);
         alert(returnData.data.message);
         window.location.reload();
       } else {
@@ -94,7 +94,7 @@ function AuthForm(){
   const loginMyDID = () =>{
     const send_param = {
       headers,
-      username: $.cookie("login_email"),
+      username: sessionStorage.getItem('login_email'),
       registerNumber: registerNumber.current.value
     };
 
@@ -119,7 +119,7 @@ function AuthForm(){
   const loginConfirmMyDID = ()=>{
     const send_param = {
       headers,
-      username: $.cookie("login_email"),
+      username: sessionStorage.getItem('login_email'),
       registerNumber: registerNumber.current.value
     };
 
@@ -127,7 +127,7 @@ function AuthForm(){
       .post("http://localhost:8080/auth/confirmsignin", send_param)
       .then(returnData =>{
         if(returnData.data.key){
-          $.cookie("auth", '2', { expires: 1 });
+          sessionStorage.setItem('auth', "2");
           alert(returnData.data.message);
         }else{
           alert(returnData.data.message);
@@ -148,7 +148,7 @@ function AuthForm(){
   };
 
   //MyDID 등록이 되어있지 않을 경우
-  if($.cookie("auth") === "0"){
+  if(sessionStorage.getItem('auth') === "0"){
     return (
       <>
         <Form style={divStyle}>
