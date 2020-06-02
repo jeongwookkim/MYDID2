@@ -117,6 +117,10 @@ function LoginForm() {
       });
   };
 
+  const name = () => {
+    alert("인증완료 ");
+  };
+
   const login = () => {
     if (
       loginEmail.current.value === "" ||
@@ -229,6 +233,16 @@ function LoginForm() {
               ref={joinName}
               placeholder="name"
             />
+
+            <Button
+              style={buttonStyle}
+              onClick={name}
+              variant="secondary"
+              type="button"
+              block
+            >
+              실명인증
+            </Button>
 
             <Form.Label>Password</Form.Label>
 

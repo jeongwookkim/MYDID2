@@ -3,6 +3,23 @@ const router = express.Router();
 const User = require("../schemas/user");
 const crypto = require("crypto");
 
+/* //실명인증-가짜~
+router.post("/name", async (req, res) => {
+  try {
+    if (req.session._id == writer) {
+      res.json({ message: "삭제되었습니다." });
+    } else {
+      res.json({
+        message: "내가 쓴 댓글만 삭제할 수 있습니다.",
+        refresh: true,
+      });
+    }
+  } catch (err) {
+    console.log(err);
+    res.json({ message: false });
+  }
+}); */
+
 //회원가입
 router.post("/join", async (req, res) => {
   try {
@@ -102,7 +119,7 @@ router.post("/login", async (req, res) => {
                     message: "로그인 되었습니다!",
                     _id: user2._id,
                     email: user2.email,
-                    auth:user2.auth
+                    auth: user2.auth,
                   });
                 } else {
                   //없으면 로그인 실패횟수 추가
