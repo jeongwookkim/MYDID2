@@ -13,17 +13,32 @@ function BoardRow(props) {
   return (
     <tr>
       <td>
-        <NavLink to={{ pathname: "/board/detail", query: { _id: props._id, writer: props.writer } }}>
+        <NavLink
+          to={{
+            pathname: "/board/detail",
+            query: { _id: props._id, writer: props.writer },
+          }}
+        >
           {props.createdAt.substring(0, 10)}
         </NavLink>
       </td>
       <td>
-        <NavLink to={{ pathname: "/board/detail", query: { _id: props._id, writer: props.writer } }}>
+        <NavLink
+          to={{
+            pathname: "/board/detail",
+            query: { _id: props._id, writer: props.writer },
+          }}
+        >
           {props.title}
         </NavLink>
       </td>
       <td>
-        <NavLink to={{ pathname: "/board/detail", query: { _id: props._id, writer: props.writer } }}>
+        <NavLink
+          to={{
+            pathname: "/board/detail",
+            query: { _id: props._id, writer: props.writer },
+          }}
+        >
           {props.name}
         </NavLink>
       </td>
@@ -41,8 +56,10 @@ function BoardForm(props) {
   const getBoardList = () => {
     const send_param = {
       headers,
+
       _id: sessionStorage.getItem('login_id'),
       email:sessionStorage.getItem('login_email')
+
     };
 
     axios
