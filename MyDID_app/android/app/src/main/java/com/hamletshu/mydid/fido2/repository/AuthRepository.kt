@@ -42,7 +42,7 @@ import java.util.concurrent.Executors
 /**
  * 싱글톤 패턴으로 뷰모델마다 동일한 Repository 인스턴스로 접근하여 데이터를 로드하도록 도와줍
  * API, 로컬 데이터 저장소 및 FIDO2 API와 함께 작동합니다.
-  * Works with the API, the local data store, and FIDO2 API.
+ * Works with the API, the local data store, and FIDO2 API.
  */
 class AuthRepository(
     private val api: AuthApi,
@@ -85,7 +85,7 @@ class AuthRepository(
     /**
      * 요청과 응답 API 사이에 기억해야 할 일시적인 challenge를 저장합니다
      * 자격 증명 등록 및 로그인을 요청합니다.
-          * Stores a temporary challenge that needs to be memorized between request and response API
+     * Stores a temporary challenge that needs to be memorized between request and response API
      * calls for credential registration and sign-in.
      */
     private var lastKnownChallenge: String? = null
@@ -164,11 +164,14 @@ class AuthRepository(
             processing.postValue(true)
             val username = prefs.getString(PREF_USERNAME, null)!!
             try {
-                val token = api.password(username, password)
+                val returnData = api.password(username, password)
+                val token = returnData.get(0)
+                val username2 = returnData.get(1)
                 prefs.edit(commit = true) { putString(PREF_TOKEN, token) }
+                prefs.edit(commit = true) { putString(PREF_USERNAME, username2) }
                 invokeSignInStateListeners(SignInState.SignedIn(username, token))
             } catch (e: ApiException) {
-                Log.e(TAG, "로그인 자격 증명이 잘못되었습니다.", e)
+                Log.e(TAG, "로그인 자격 증명이 잘못 되었습니다.", e)
 
                 // start login over again
                 prefs.edit(commit = true) {
@@ -193,7 +196,7 @@ class AuthRepository(
      */
     fun getCredentials(): LiveData<List<Credential>> {
         executor.execute {
-            refreshCredentials()
+            //            refreshCredentials()
         }
         return Transformations.map(prefs.liveStringSet(PREF_CREDENTIALS, emptySet())) { set ->
             parseCredentials(set)
@@ -266,7 +269,8 @@ class AuthRepository(
                 processing.postValue(true)
                 try {
                     val token = prefs.getString(PREF_TOKEN, null)!!
-                    val (options, challenge) = api.registerRequest(token)
+                    val username = prefs.getString(PREF_USERNAME, null)!!
+                    val (options, challenge) = api.registerRequest(token, username)
                     lastKnownChallenge = challenge
                     val task: Task<Fido2PendingIntent> = client.getRegisterIntent(options)
                     result.postValue(Tasks.await(task))
@@ -313,7 +317,7 @@ class AuthRepository(
      * 서버에 등록 된 자격 증명을 제거합니다.
      * Removes a credential registered on the server.
      */
-    fun removeKey(credentialId: String, processing: MutableLiveData<Boolean>) {
+/*    fun removeKey(credentialId: String, processing: MutableLiveData<Boolean>) {
         executor.execute {
             processing.postValue(true)
             try {
@@ -326,7 +330,7 @@ class AuthRepository(
                 processing.postValue(false)
             }
         }
-    }
+    }*/
 
     /**
      * * FIDO2 자격 증명으로 로그인을 시작합니다. 로그인 상태 인 경우에만 호출해야합니다.
