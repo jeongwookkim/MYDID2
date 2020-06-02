@@ -62,8 +62,18 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         repository.registerResponse(data, _processing)
     }
 
-    fun removeKey(credentialId: String) {
-        repository.removeKey(credentialId, _processing)
+
+    fun signinRequest():(LiveData<Fido2PendingIntent>) {
+        return repository.signinRequest(_processing)
     }
+
+
+    fun signinResponse(data: Intent) {
+        repository.signinResponse(data, _processing)
+    }
+
+/*    fun removeKey(credentialId: String) {
+        repository.removeKey(credentialId, _processing)
+    }*/
 
 }

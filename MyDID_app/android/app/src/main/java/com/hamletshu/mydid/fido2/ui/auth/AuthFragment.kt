@@ -61,9 +61,9 @@ class AuthFragment : Fragment() {
         }
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
+    /*override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel.signinIntent.observeOnce(this) { intent ->
+        *//*viewModel.signinIntent.observeOnce(this) { intent ->
             val a = activity
             if (intent.hasPendingIntent() && a != null) {
                 try {
@@ -72,8 +72,8 @@ class AuthFragment : Fragment() {
                     Log.e(TAG, "Error launching pending intent for signin request", e)
                 }
             }
-        }
-    }
+        }*//*
+    }*/
 
     fun handleSignin(data: Intent) {
         viewModel.signinResponse(data)

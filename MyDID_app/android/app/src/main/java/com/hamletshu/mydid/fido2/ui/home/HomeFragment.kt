@@ -94,7 +94,7 @@ class HomeFragment : Fragment(), DeleteConfirmationFragment.Listener {
             }
         }
 
-        // FAB
+        // 등록
         binding.add.setOnClickListener {
             viewModel.registerRequest().observeOnce(requireActivity()) { intent ->
                 val a = activity
@@ -107,10 +107,26 @@ class HomeFragment : Fragment(), DeleteConfirmationFragment.Listener {
                 }
             }
         }
+
+        // 로그인
+        binding.add2.setOnClickListener {
+            viewModel.signinRequest().observeOnce(this) { intent ->
+                val a = activity
+                if (intent.hasPendingIntent() && a != null) {
+                    try {
+                        intent.launchPendingIntent(a, MainActivity.REQUEST_FIDO2_SIGNIN)
+                    } catch (e: IntentSender.SendIntentException) {
+                        Log.e(TAG, "Error launching pending intent for signin request", e)
+                    }
+                }
+            }
+        }
+
+
     }
 
     override fun onDeleteConfirmed(credentialId: String) {
-        viewModel.removeKey(credentialId)
+//        viewModel.removeKey(credentialId)
     }
 
     fun handleRegister(data: Intent) {

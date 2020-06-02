@@ -23,7 +23,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.hamletshu.mydid.fido2.ui.username.UsernameFragment
-import kotlinx.android.synthetic.main.fragment_menu.view.*
+//import kotlinx.android.synthetic.main.fragment_menu.view.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -57,22 +57,22 @@ class MenuFragment : Fragment() {
 
         val view: View = inflater.inflate(R.layout.fragment_menu, container, false)
 
-        view.FIDOInsertBtn.setOnClickListener { view ->
-            val fragment = UsernameFragment()
-            fragmentManager?.beginTransaction()?.replace(R.id.container, fragment)?.commit()
-        }
+        /*    view.FIDOInsertBtn.setOnClickListener { view ->
+                val fragment = UsernameFragment()
+                fragmentManager?.beginTransaction()?.replace(R.id.container, fragment)?.commit()
+            }
 
-        view.FIDOLoginBtn.setOnClickListener { view ->
-            val fragment = UsernameFragment()
-            fragmentManager?.beginTransaction()?.replace(R.id.container, fragment)?.commit()
-        }
+            view.FIDOLoginBtn.setOnClickListener { view ->
+                val fragment = UsernameFragment()
+                fragmentManager?.beginTransaction()?.replace(R.id.container, fragment)?.commit()
+            }
 
-        view.FIDOListBtn.setOnClickListener { view ->
-//            val fragment = HomeFragment()
-//            fragmentManager?.beginTransaction()?.replace(R.id.container, fragment)?.commit()
-            val intent=Intent(activity,WebViewActivity::class.java)
-            startActivity(intent)
-        }
+            view.FIDOListBtn.setOnClickListener { view ->
+    //            val fragment = HomeFragment()
+    //            fragmentManager?.beginTransaction()?.replace(R.id.container, fragment)?.commit()
+                val intent=Intent(activity,WebViewActivity::class.java)
+                startActivity(intent)
+            }*/
 
         // Return the fragment view/layout
         return view
