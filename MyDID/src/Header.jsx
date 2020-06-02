@@ -24,7 +24,7 @@ function Header() {
 
   function logout() {
     axios
-      .get("http://localhost:8080/member/logout", { headers })
+      .get(process.env.REACT_APP_URL+"/member/logout", { headers })
       .then((returnData) => {
         if (returnData.data.message) {
           sessionStorage.clear();

@@ -94,7 +94,7 @@ function BoardDetail(props) {
 
   const getCommentList = useCallback(() => {
     axios
-      .post("http://localhost:8080/board/detail", "")
+      .post(process.env.REACT_APP_URL+"/board/detail", "")
       .then(async (returnData) => {
         if (returnData.data.comment.length > 0) {
           setComments(returnData.data.comment);
@@ -117,7 +117,7 @@ function BoardDetail(props) {
     };
 
     axios
-      .post("http://localhost:8080/board/detail", send_param)
+      .post(process.env.REACT_APP_URL+"/board/detail", send_param)
       //정상 수행
       .then(async (returnData) => {
         if (returnData.data.board[0]) {
@@ -128,7 +128,7 @@ function BoardDetail(props) {
           }
           const board = (
             <div>
-              {/* <Image src={process.env.REACT_APP_URL + returnData.data.board[0].imgPath} fluid /> */}
+              <Image src={process.env.REACT_APP_URL + returnData.data.board[0].imgPath} fluid /> 
               <Table striped bordered hover>
                 <thead>
                   <tr>
@@ -196,7 +196,7 @@ function BoardDetail(props) {
 
     if (window.confirm("수정 하시겠습니까?")) {
       axios
-        .post("http://localhost:8080/board/update", send_param)
+        .post(process.env.REACT_APP_URL+"/board/update", send_param)
         //정상 수행
         .then((returnData) => {
           alert(returnData.data.data);
@@ -221,7 +221,7 @@ function BoardDetail(props) {
 
     if (window.confirm("정말 삭제하시겠습니까?")) {
       axios
-        .post("http://localhost:8080/board/delete", send_param)
+        .post(process.env.REACT_APP_URL+"/board/delete", send_param)
         //정상 수행
         .then((returnData) => {
           alert(returnData.data.message);
@@ -243,7 +243,7 @@ function BoardDetail(props) {
         _id,
       };
       axios
-        .post("http://localhost:8080/comment/delete", send_param)
+        .post(process.env.REACT_APP_URL +"/comment/delete", send_param)
         .then((returnData) => {
           alert(returnData.data.message);
           setComments(returnData.data.comment);
@@ -270,7 +270,7 @@ function BoardDetail(props) {
       _id: props.location.query._id,
       _comment: commentTitle.current.value,
     };
-    axios.post("http://localhost:8080/comment/writecomment", send_param)
+    axios.post(process.env.REACT_APP_URL+"/comment/writecomment", send_param)
     .then((returnData)=>{
       alert(returnData.data.message);
     })

@@ -46,7 +46,7 @@ function BoardForm(props) {
     };
 
     axios
-      .post("http://localhost:8080/board/getBoardList", send_param)
+      .post(process.env.REACT_APP_URL+"/board/getBoardList", send_param)
       .then((returnData) => {
         if (returnData.data.list.length > 0) {
           //console.log(returnData.data.list.login_email);
