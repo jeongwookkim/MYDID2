@@ -149,7 +149,7 @@ function LoginForm() {
           // console.log("login_id:" + returnData.data._id);
           sessionStorage.setItem('login_id', returnData.data._id);
           sessionStorage.setItem('login_email', returnData.data.email);
-          sessionStorage.setItem('auth', returnData.data.auth);
+          sessionStorage.setItem('auth', 2);
           alert(returnData.data.message);
           window.location.reload();
         } else {

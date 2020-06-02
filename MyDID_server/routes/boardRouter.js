@@ -59,40 +59,41 @@ router.post("/delete", async (req, res) => {
 
 router.post("/update", upload.single("imgFile"), async (req, res) => {
   try{    
-    console.log("update"+ req.body);
-    const _id = req.body.boardId;
+    
+    //console.log("update "+ req.body._id);
+    const _id = req.body.boardId;//board 게시물 id
     console.log(_id);
-    console.log("session id : "+req.session._id);
-    const board = await Board.find({ _id }).populate("writer");
-    console.log("update board : "+ board[0].writer._id);
-        if (file == undefined) {
+    //console.log("session id : "+req.session._id);
+    //const board = await Board.find({ _id }).populate("writer");
+    //console.log("update board : "+ board[0]._id);
+    const file = req.file;
+
+      if (file == undefined) {
         await Board.update(
-          { _id: req.session._id },
+          { _id: req.body.boardId },
           {
             $set: {
               writer: req.session._id,
               title: req.body.title,
               content: req.body.content,
-              //login_email: req.body.login_email,
             },
           }
         );
       } else {
         await Board.update(
-          { _id: req.session._id },
+          { _id: req.body.boardId },
           {
             $set: {
-              writer: req.body._id,
+              writer: req.session._id,
               title: req.body.title,
               content: req.body.content,
               imgPath: file.filename,
-              //login_email: req.body.login_email,
             },
           }
         );
       }
 
-      res.json({ message: "게시글이 수정 되었습니다." });
+      res.json({ message : "게시글이 수정되었습니다." });
   } catch (err) {
     console.log(err);
     res.json({ message: false });
