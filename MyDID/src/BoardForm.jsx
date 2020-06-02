@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Jumbotron, Form, Button, Image, Table } from "react-bootstrap";
+import { Table } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import axios from "axios";
-import $ from "jquery";
-import {} from "jquery.cookie";
 
 axios.defaults.withCredentials = true;
 const headers = { withCredentials: true };
@@ -108,14 +106,6 @@ function BoardForm(props) {
     padding: 20,
   };
 
-  const icon = {
-    position: "relative",
-    backgroundPosition: "center",
-    height: "62px",
-  };
-  const border = {
-    marginTop: 20,
-  };
   return (
     <div>
       <section className="page-section bg-secondary" id="about">

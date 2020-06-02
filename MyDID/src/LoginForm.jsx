@@ -1,9 +1,7 @@
-import React, { useEffect, useRef, Component } from "react";
-import { Jumbotron, Form, Button, Image } from "react-bootstrap";
+import React, { useEffect, useRef } from "react";
+import { Jumbotron, Form, Button } from "react-bootstrap";
 import { loadReCaptcha, ReCaptcha } from "react-recaptcha-v3";
 import axios from "axios";
-import $ from "jquery";
-import {} from "jquery.cookie";
 axios.defaults.withCredentials = true;
 const headers = { withCredentials: true };
 
@@ -20,7 +18,7 @@ function LoginForm() {
   }, []);
   const verifyCallback = (recaptchaToken) => {
     // Here you will get the final recaptchaToken!!!
-    console.log(recaptchaToken, "<= your recaptcha token");
+    // console.log(recaptchaToken, "<= your recaptcha token");
   };
   const join = () => {
     /* const regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
@@ -216,7 +214,7 @@ function LoginForm() {
             
       <div style={divStyle}>
         <Jumbotron style={{ opacity: 0.9 }} className="float-right my-4 mr-5">
-          <Form controlId="joinForm">
+          <Form>
             <h3>회원가입</h3>
 
             <Form.Label>Email address</Form.Label>
@@ -281,7 +279,7 @@ function LoginForm() {
         </Jumbotron>
 
         <Jumbotron style={{ opacity: 0.9 }} className="float-right my-4 mr-5">
-          <Form controlId="loginForm">
+          <Form>
             <h3>로그인</h3>
 
             <Form.Label>Email address</Form.Label>
