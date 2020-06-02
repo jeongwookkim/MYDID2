@@ -6,14 +6,11 @@ import BoardWriteForm from "./BoardWriteForm";
 import BoardDetail from "./BoardDetail";
 import MypageForm from "./MypageForm";
 import { Route } from "react-router-dom";
-import $ from "jquery";
-import {} from "jquery.cookie";
 
 function Body() {
   let resultForm;
   function getResultForm() {
-    console.log(sessionStorage);
-    console.log(sessionStorage.getItem('login_id'));
+
     if (sessionStorage.getItem('login_id')) {
       if (sessionStorage.getItem('auth') === '2') {
         resultForm = <Route exact path="/" component={BoardForm}></Route>;

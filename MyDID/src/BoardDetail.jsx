@@ -2,15 +2,8 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import { Table, Button, Image, Form } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import axios from "axios";
-import $ from "jquery";
-import {} from "jquery.cookie";
 axios.defaults.withCredentials = true;
 const headers = { withCredentials: true };
-
-const marginBottom = {
-  marginBottom: 5,
-  width: 300,
-};
 
 const boardStyle={
   margin: 5,
@@ -277,7 +270,6 @@ function BoardDetail(props) {
 
   //댓글 등록
   const writeComment = useCallback(() => {
-    let url;
     //const formData = new FormData();
     const send_param = {
       headers,

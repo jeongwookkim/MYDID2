@@ -1,8 +1,6 @@
 import React, { useEffect, useRef, useCallback } from "react";
 import { Button, Form } from "react-bootstrap";
 import axios from "axios";
-import $ from "jquery";
-import {} from "jquery.cookie";
 axios.defaults.withCredentials = true;
 const headers = { withCredentials: true };
 
