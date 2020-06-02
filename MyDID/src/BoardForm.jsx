@@ -13,14 +13,14 @@ function BoardRow(props) {
   return (
     <tr>
       <td>
-        <NavLink
+        {/* <NavLink
           to={{
             pathname: "/board/detail",
             query: { _id: props._id, writer: props.writer },
           }}
-        >
+        > */}
           {props.createdAt.substring(0, 10)}
-        </NavLink>
+        {/* </NavLink> */}
       </td>
       <td>
         <NavLink
@@ -29,18 +29,21 @@ function BoardRow(props) {
             query: { _id: props._id, writer: props.writer },
           }}
         >
+          <div >
           {props.title}
+          </div>
+          
         </NavLink>
       </td>
       <td>
-        <NavLink
+        {/* <NavLink
           to={{
             pathname: "/board/detail",
             query: { _id: props._id, writer: props.writer },
           }}
-        >
+        > */}
           {props.name}
-        </NavLink>
+        {/* </NavLink> */}
       </td>
     </tr>
   );
@@ -133,9 +136,9 @@ function BoardForm(props) {
         <Table striped bordered hover>
           <thead>
             <tr>
-              <th>날짜</th>
-              <th>글 제목</th>
-              <th>작성자</th>
+              <th width="120">날짜</th>
+              <th >글 제목</th>
+              <th width="100">작성자</th>
             </tr>
           </thead>
           <tbody>{boardList}</tbody>

@@ -119,7 +119,7 @@ function BoardWriteForm(props){
         
         <input type="file" ref={imgFile}></input><br/>
         <Form.Label>※ 이미지 파일을 선택하지 않을 경우 기존 업로드된 이미지 파일을 유지합니다.</Form.Label>
-        <Button style={buttonStyle} onClick={writeBoard} block>
+        <Button variant="outline-secondary" style={buttonStyle} onClick={writeBoard} block>
           저장하기
         </Button>
         </Form.Group>
@@ -145,7 +145,7 @@ function BoardWriteForm(props){
         ></CKEditor> */}
         
         <input type="file" ref={imgFile}></input>
-        <Button style={buttonStyle} onClick={writeBoard} block>
+        <Button variant="outline-secondary" style={buttonStyle} onClick={writeBoard} block>
           저장하기
         </Button>
         </Form.Group>

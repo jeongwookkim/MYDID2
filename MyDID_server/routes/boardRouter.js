@@ -154,10 +154,10 @@ router.post("/detail", async (req, res) => {
   try {
     const _id = req.body._id;
     const board = await Board.find({ _id }).populate("writer");
-    const comment = await Comment.find({}).sort({ createdAt: -1 });
+    const comment = await Comment.find({}).sort({ createdAt: -1 }).populate("writer");
 
     //console.log("board writer id : "+ board[0].writer);
-    //console.log("board writer name : "+ board.writer);
+    console.log("board writer name : "+ comment.writer);
 
     res.json({ board, comment });
     //console.log(comment[0].writer);
