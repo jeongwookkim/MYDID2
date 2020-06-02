@@ -26,7 +26,11 @@ router.post("/register", async (req, res) => {
             await axios
             .post("https://mydid.kro.kr/auth/register", send_param)
             .then(returnData =>{
-                res.json({ message: returnData.data.message, code: "200" });
+                if(returnData.data.key){
+                    res.json({ message: returnData.data.message, code: "200", key: "1" });
+                }else{
+                    res.json({ message: returnData.data.message, code: "200" });
+                }
             })
             //에러
             .catch(err => {

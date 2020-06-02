@@ -122,6 +122,9 @@ function BoardDetail(props) {
     //   marginBottom: 5,
     //   width: 90,
     // };
+    const imageStyle = {
+      textAlign : "center"
+    }
 
     axios
       .post(process.env.REACT_APP_URL+"/board/detail", send_param)
@@ -135,7 +138,11 @@ function BoardDetail(props) {
           }
           const board = (
             <div>
-              <Image src={process.env.REACT_APP_URL + returnData.data.board[0].imgPath} fluid /> 
+              {returnData.data.board[0].imgPath !== undefined? (
+              <div style={imageStyle}>
+              <Image src={process.env.REACT_APP_URL + "/upload/" +returnData.data.board[0].imgPath} fluid /> 
+              </div>
+              ): ""}
               <Table striped bordered hover>
                 <thead>
                   <tr>
