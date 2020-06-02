@@ -53,6 +53,7 @@ router.post("/join", async (req, res) => {
                 obj = {
                   email: req.body.email,
                   name: req.body.name,
+                  phoneNumber: req.body.phoneNumber,
                   password: key.toString("base64"),
                   salt: buf.toString("base64"),
                 };
@@ -120,6 +121,7 @@ router.post("/login", async (req, res) => {
                     _id: user2._id,
                     email: user2.email,
                     auth: user2.auth,
+                    phoneNumber: user2.phoneNumber
                   });
                 } else {
                   //없으면 로그인 실패횟수 추가

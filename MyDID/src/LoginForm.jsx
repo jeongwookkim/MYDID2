@@ -13,6 +13,7 @@ function LoginForm() {
   const joinPw = useRef();
   const loginEmail = useRef();
   const loginPw = useRef();
+  const phoneNumber = useRef();
 
   useEffect(() => {
     loadReCaptcha("6LfGieAUAAAAAJSOoqXS5VQdT_e5AH8u0n2e1PDb");
@@ -82,6 +83,9 @@ function LoginForm() {
 
    return;
 
+  } else if(phoneNumber.current.value === null || phoneNumber.current.value ===  undefined){
+      alert('휴대전화 번호를 입력해주세요.');
+      return;
   } */
 
     const send_param = {
@@ -89,6 +93,7 @@ function LoginForm() {
       email: joinEmail.current.value,
       name: joinName.current.value,
       password: joinPw.current.value,
+      phoneNumber: phoneNumber.current.value
     };
 
     axios
@@ -106,6 +111,7 @@ function LoginForm() {
             joinEmail.current.value = "";
             joinName.current.value = "";
             joinPw.current.value = "";
+            phoneNumber.current.value = "";
           }
         } else {
           alert("회원가입 실패");
@@ -251,6 +257,15 @@ function LoginForm() {
               maxLength="64"
               ref={joinPw}
               placeholder="Password"
+            />
+
+            <Form.Label>phone number</Form.Label>
+
+            <Form.Control
+              type="text"
+              maxLength="64"
+              ref={phoneNumber}
+              placeholder="phone number"
             />
 
             <Button
@@ -515,7 +530,7 @@ function LoginForm() {
       <footer className="bg-light py-5">
         <div className="container">
           <div className="small text-center text-muted">
-            Copyright © 2020 - Start Bootstrap
+            Copyright © 2020 - 족발나라 민경공주
           </div>
         </div>
       </footer>

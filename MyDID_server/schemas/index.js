@@ -11,7 +11,7 @@ module.exports = () => {
       process.env.MONGO_URL
      ,
       {
-        dbName: "til"
+        dbName: "mydid"
       },
       error => {
         if (error) {

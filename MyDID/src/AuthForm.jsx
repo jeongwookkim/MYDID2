@@ -8,7 +8,7 @@ import { useQrious } from 'react-qrious';
 axios.defaults.withCredentials = true;
 const headers = { withCredentials: true };
 
-function MyDIDConfirmForm(props){
+/* function MyDIDConfirmForm(props){
   return(
       <>
         <Image src={props.dataUrl} />
@@ -25,7 +25,7 @@ function MyDIDConfirmForm(props){
         </Button>
       </>
   );
-}
+} */
 
 //DID 등록 및 인증 폼 컴포넌트
 function AuthForm(){
@@ -36,10 +36,10 @@ function AuthForm(){
   const [dataUrl, setDataURL] = useQrious({ value });
 
   //최초 렌더링 완료시 이메일 세팅
-  useEffect(()=>{
+   useEffect(()=>{
     username.current.value = sessionStorage.getItem('login_email');
   },[]);
-
+/*
   //MyDID 최초 발급 시 인증하기 버튼 클릭시 계정 생성
   const insertMyDID = () =>{
     const send_param = {
@@ -113,7 +113,7 @@ function AuthForm(){
       .catch(err => {
         console.log(err);
       });
-  }
+  } */
 
   //MyDID 인증확인 버튼 클릭시
   const loginConfirmMyDID = ()=>{
@@ -153,6 +153,7 @@ function AuthForm(){
       <>
         <Form style={divStyle}>
           <h3>My DID 등록</h3>
+          <Image src={dataUrl} />
           <Form.Label>아이디</Form.Label>
           <Form.Control
             type="text"
@@ -170,7 +171,6 @@ function AuthForm(){
           />
           <Button
             style={buttonStyle}
-            onClick={insertMyDID}
             variant="secondary"
             type="button"
             block
@@ -204,7 +204,6 @@ function AuthForm(){
         />
         <Button
           style={buttonStyle}
-          onClick={loginMyDID}
           variant="secondary"
           type="button"
           block
