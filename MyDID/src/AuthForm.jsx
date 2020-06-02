@@ -9,11 +9,21 @@ axios.defaults.withCredentials = true;
 const headers = { withCredentials: true };
 
 function MyDIDConfirmForm(props){
+  const imageStyle = {
+    margin: 20,
+    textAlign: "center"
+  }
+  const imageSize = {
+    width : 300,
+    height : 300
+  }
   return(
       <>
-        <Image src={props.dataUrl} />
-        <div>
-          <Form.Label>QR코드를 통해 MyDID 어플리케이션을 설치해주시고 MyDID 등록과 인증절차를 진행해주시기 바랍니다.</Form.Label>
+        <div style={imageStyle}>
+          <Image style={imageSize} src={props.dataUrl} />
+          <div style={imageStyle}>
+            <Form.Label>QR코드를 통해 MyDID 웹사이트에서 MyDID 등록과 인증절차를 진행해주시기 바랍니다.</Form.Label>
+          </div>
         </div>
         <Button
           onClick={props.action}
@@ -25,6 +35,18 @@ function MyDIDConfirmForm(props){
         </Button>
       </>
   );
+}
+
+function logoutSession() {
+  axios
+    .get(process.env.REACT_APP_URL+"/member/logout", { headers })
+    .then((returnData) => {
+      if (returnData.data.message) {
+        sessionStorage.clear();
+        alert("로그아웃 되었습니다!");
+        window.location.href = "/";
+      }
+    });
 }
 
 //DID 등록 및 인증 폼 컴포넌트
@@ -53,14 +75,20 @@ function AuthForm(){
       .then(returnData =>{
         if (returnData.data.code === '200') {
           alert(returnData.data.message);
-          setMyDIDConfirmForm(<MyDIDConfirmForm action={insertConfirmMyDID} dataUrl={dataUrl}/>);
+          if(!returnData.data.key){
+            setMyDIDConfirmForm(<MyDIDConfirmForm action={insertConfirmMyDID} dataUrl={dataUrl}/>);
+          }
         } else {
           alert(returnData.data.message);
+          logoutSession();
+          window.location.reload();
         }
       })
      //에러
       .catch(err => {
-        console.log(err);
+        // console.log(err);
+        logoutSession();
+        window.location.reload();
       });
   }
   
@@ -81,12 +109,15 @@ function AuthForm(){
         window.location.reload();
       } else {
         alert(returnData.data.message);
+        logoutSession();
         window.location.reload();
       }
     })
     //에러
     .catch(err => {
-      console.log(err);
+      // console.log(err);
+      logoutSession();
+      window.location.reload();
     });
   }
   
@@ -111,7 +142,8 @@ function AuthForm(){
       })
     //에러
       .catch(err => {
-        console.log(err);
+        // console.log(err);
+        window.location.reload();
       });
   }
 
@@ -131,12 +163,14 @@ function AuthForm(){
           alert(returnData.data.message);
         }else{
           alert(returnData.data.message);
+          window.location.reload();
         }
         window.location.reload();
       })
     //에러
     .catch(err => {
-      console.log(err);
+      // console.log(err);
+      window.location.reload();
     });
   }
 
