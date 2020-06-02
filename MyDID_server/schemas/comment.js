@@ -10,8 +10,9 @@ const commentSchema = new Schema({
     required: true
   },
   writer: {
-    type: String,
-    required: true
+    type: ObjectId,
+    required: true,
+    ref: "User"
   },
   comment: {
     type: String,

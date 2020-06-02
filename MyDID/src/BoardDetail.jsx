@@ -9,8 +9,13 @@ const headers = { withCredentials: true };
 
 const marginBottom = {
   marginBottom: 5,
-  width: 90,
+  width: 300,
 };
+
+const boardStyle={
+  margin: 5,
+  //backgroundPosition: "center",
+}
 
 //게시글 삭제 컴포넌트
 function RemoveModifyBtn(props) {
@@ -21,15 +26,17 @@ function RemoveModifyBtn(props) {
       <NavLink
           to={{ pathname: "/BoardWrite", query: {_id:props._id, title:props.title, content:props.content}}}>
         <Button
+          variant="outline-secondary"
           block
-          style={marginBottom}
+          style={boardStyle}
         >
           글 수정
         </Button>
       </NavLink>
         <Button
+          variant="outline-danger"
           block
-          style={marginBottom}
+          style={boardStyle}
           onClick={props.deleteBoard}
         >
           글 삭제
@@ -40,15 +47,15 @@ function RemoveModifyBtn(props) {
 }
 //댓글 ROW 컴포넌트
 function CommentRow(props) {
-  //console.log(props.comment.writer.name);
+  console.log(props.comment.writer.name);
   return (
     <tr>
-      <td>{props.comment.writer}</td>
+      <td>{props.comment.writer.name}</td>
       <td>{props.comment.comment}</td>
       <td>
-        <button onClick={() => props.removeComment(props.comment._id)}>
+        <Button variant="outline-danger" onClick={() => props.removeComment(props.comment._id)}>
           삭제
-        </button>
+        </Button>
       </td>
     </tr>
   );
@@ -66,9 +73,9 @@ function CommentList(props) {
       <Table striped bordered hover>
         <thead>
           <tr>
-            <th>댓글작성자</th>
+            <th width="120">댓글작성자</th>
             <th>댓글내용</th>
-            <th>삭제</th>
+            <th width="100">삭제</th>
           </tr>
         </thead>
         <tbody>
@@ -111,10 +118,10 @@ function BoardDetail(props) {
       headers,
       _id: props.location.query._id,
     };
-    const marginBottom = {
-      marginBottom: 5,
-      width: 90,
-    };
+    // const marginBottom = {
+    //   marginBottom: 5,
+    //   width: 90,
+    // };
 
     axios
       .post("http://localhost:8080/board/detail", send_param)
@@ -308,7 +315,7 @@ function BoardDetail(props) {
           ref={commentTitle}
           maxLength="64"
         />
-        <Button style={buttonStyle} block onClick={writeComment}>
+        <Button style={buttonStyle} block onClick={writeComment} variant="outline-secondary">
           댓글작성
         </Button>
       </div>
