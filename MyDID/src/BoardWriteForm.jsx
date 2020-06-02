@@ -59,9 +59,9 @@ function BoardWriteForm(props){
     
     if (props.location.query !== undefined) {
       formData.append("boardId", props.location.query._id);
-      url = "http://localhost:8080/board/update";
+      url = process.env.REACT_APP_URL+"/board/update";
     } else {
-      url = "http://localhost:8080/board/write";
+      url = process.env.REACT_APP_URL+"/board/write";
     }
 
     axios

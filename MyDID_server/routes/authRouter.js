@@ -3,7 +3,11 @@ const router = express.Router();
 const User = require("../schemas/user");
 const crypto = require("crypto");
 const axios = require("axios");
-const headers = {origin : "http://localhost:8080"};
+const dotenv = require("dotenv");
+
+dotenv.config();
+
+const headers = {origin : process.env.REACT_APP_URL};
 
 //MyDID 아이디 생성
 router.post("/register", async (req, res) => {

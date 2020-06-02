@@ -92,7 +92,7 @@ function LoginForm() {
     };
 
     axios
-      .post("http://localhost:8080/member/join", send_param)
+      .post(process.env.REACT_APP_URL+"/member/join", send_param)
       //정상 수행
       .then((returnData) => {
         if (returnData.data.message) {
@@ -145,7 +145,7 @@ function LoginForm() {
     };
 
     axios
-      .post("http://localhost:8080/member/login", send_param)
+      .post(process.env.REACT_APP_URL+"/member/login", send_param)
 
       //정상 수행
       .then((returnData) => {
@@ -153,7 +153,7 @@ function LoginForm() {
           // console.log("login_id:" + returnData.data._id);
           sessionStorage.setItem('login_id', returnData.data._id);
           sessionStorage.setItem('login_email', returnData.data.email);
-          sessionStorage.setItem('auth', 2);
+          sessionStorage.setItem('auth', returnData.data.auth);
           alert(returnData.data.message);
           window.location.reload();
         } else {

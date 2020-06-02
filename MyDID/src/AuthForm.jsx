@@ -49,7 +49,7 @@ function AuthForm(){
     };
 
     axios
-      .post("http://localhost:8080/auth/register", send_param)
+      .post(process.env.REACT_APP_URL + "/auth/register", send_param)
       .then(returnData =>{
         if (returnData.data.code === '200') {
           alert(returnData.data.message);
@@ -73,7 +73,7 @@ function AuthForm(){
     };
     
     axios
-    .post("http://localhost:8080/auth/confirmregister", send_param)
+    .post(process.env.REACT_APP_URL+"/auth/confirmregister", send_param)
     .then(returnData =>{
       if(returnData.data.auth === '1'){
         sessionStorage.setItem('auth', returnData.data.auth);
@@ -99,7 +99,7 @@ function AuthForm(){
     };
 
     axios
-      .post("http://localhost:8080/auth/registersignin", send_param)
+      .post(process.env.REACT_APP_URL+"/auth/registersignin", send_param)
       .then(returnData =>{
         if (returnData.data.auth='1') {
           alert(returnData.data.message);
@@ -124,7 +124,7 @@ function AuthForm(){
     };
 
     axios
-      .post("http://localhost:8080/auth/confirmsignin", send_param)
+      .post(process.env.REACT_APP_URL+"/auth/confirmsignin", send_param)
       .then(returnData =>{
         if(returnData.data.key){
           sessionStorage.setItem('auth', "2");
