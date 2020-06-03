@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">MyDID</string>
+    <string name="string1">FIDO2와 블록체인을 활용한\n생체 인증 API</string>
+    <string name="string2">FIDO2를 기반으로 한 생체 인증 체계가 정부기관들로 구성된 BlockChain Network를 기반으로 신뢰된 개인정보들과 함께 동작한다면 전자 서명으로서 활용할 수 있을 것이라고 기대된다.\n(생체인증을 활용한 부인 방지 시스템)\n</string>
+    <string name="string3">※사용 방법\n1.사용자는 휴대폰 본인 인증 후 MyDID를 등록한다.\n(MyDID를 지원하는 모든 홈페이지에서 사용 가능)\n2.MyDID를 지원하는 웹 서비스에 로그인 한다.\n3.MyDID 인증을 받기 위해 MyDID 웹으로 이동하여 인증 절차를 수행한다.\n</string>
+    <string name="string4"><![CDATA[※웹 서비스 제공자\nPOST 요청\nURL : https://mydid.kro.kr/auth/requestsignin\nBODY : {phoneNumber : 사용자의 핸드폰 번호}\n]]></string>
+    <string name="string5"><![CDATA[Response BODY\n인증 성공 {key : \'1\', message : 인증 성공 메시지}\n인증 실패 {key : \'n\' message : n에 해당하는 인증 실패 메시지}]]></string>
+</resources>
