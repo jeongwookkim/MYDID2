@@ -14,14 +14,14 @@ function LoginForm() {
   const phoneNumber = useRef();
 
   useEffect(() => {
-    loadReCaptcha("6LfGieAUAAAAAJSOoqXS5VQdT_e5AH8u0n2e1PDb");
+    loadReCaptcha("6LeD4f8UAAAAAJFs_wZNVe9nBl-FVfjGH5CEH4Pp");
   }, []);
   const verifyCallback = (recaptchaToken) => {
     // Here you will get the final recaptchaToken!!!
     // console.log(recaptchaToken, "<= your recaptcha token");
   };
   const join = () => {
-    /* const regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+     const regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
 
   const regExp2 = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,16}$/;
 
@@ -84,7 +84,7 @@ function LoginForm() {
   } else if(phoneNumber.current.value === null || phoneNumber.current.value ===  undefined){
       alert('휴대전화 번호를 입력해주세요.');
       return;
-  } */
+  } 
 
     const send_param = {
       headers,
@@ -303,8 +303,8 @@ function LoginForm() {
             />
 
             <ReCaptcha
-              sitekey="6LfGieAUAAAAAJSOoqXS5VQdT_e5AH8u0n2e1PDb"
-              action="login"
+              sitekey="6LeD4f8UAAAAAJFs_wZNVe9nBl-FVfjGH5CEH4Pp"
+              action="/captcha"
               verifyCallback={verifyCallback}
             />
 
