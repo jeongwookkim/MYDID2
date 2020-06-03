@@ -7,15 +7,20 @@ const headers = { withCredentials: true };
 
 function Header() {
   const [buttonDisplay, setButtonDisplay] = useState("none");
+  const [logoutButtonDisplay, setLogoutButtonDisplay] = useState("none");
 
   useEffect(() => {
     getButtonStyle();
   }, []);
 
   function getButtonStyle() {
-    if (sessionStorage.getItem('login_id')) {
+    if (sessionStorage.getItem('auth') === '2') {
       setButtonDisplay("block");
+      setLogoutButtonDisplay("block");
     } else {
+      if(sessionStorage.getItem('auth') === '1' || sessionStorage.getItem('auth') === '0'){
+        setLogoutButtonDisplay("block");
+      }
       setButtonDisplay("none");
     }
   }
@@ -35,6 +40,11 @@ function Header() {
   const buttonStyle = {
     margin: "0px 5px 0px 10px",
     display: buttonDisplay,
+  };
+
+  const logoutButtonStyle = {
+    margin: "0px 5px 0px 10px",
+    display: logoutButtonDisplay,
   };
 
   const divStyle = {
@@ -75,7 +85,7 @@ function Header() {
             ​{" "}
           </NavLink>
           ​{" "}
-          <Button style={buttonStyle} onClick={logout} variant="danger">
+          <Button style={logoutButtonStyle} onClick={logout} variant="danger">
             ​ 로그아웃 ​{" "}
           </Button>
           ​{" "}

@@ -21,35 +21,23 @@ const upload = multer({
   storage: storage,
 });
 
-// router.all("*", (req, res, next)=>{
-//   if(req.session.email!==undefined){
-//     if(req.session.auth!==undefined){
-//       next();
-//     }
-//     else{
-//       res.redirect("/");
-//     }
-//   }else{
-//       res.redirect("/");
-//   }
-// });
-
 router.post("/delete", async (req, res) => {
   try {
     const _id = req.body._id;
     const writer =req.body.writer;
-    console.log("bodyid : "+ _id);
-    console.log("writer : "+writer);
-    console.log("session id : "+req.session._id);
-    // const board = await Board.find({ _id }).populate("writer");
-    // console.log(board[0].writer._id);
-    if(writer===req.session._id){
-      await Board.remove({
-        _id: _id,
-      });
-      res.json({ message: "삭제되었습니다." });
-    } else {
-      res.json({ message: "내가 쓴 글만 삭제할 수 있습니다." });
+
+    //로그인 체크
+    if(req.session._id && req.session.myDIDLogin){
+      if(writer===req.session._id){
+        await Board.remove({
+          _id: _id,
+        });
+        res.json({ message: "삭제 되었습니다." });
+      } else {
+        res.json({ message: "내가 쓴 글만 삭제할 수 있습니다." });
+      }
+    }else{
+      res.json({message: "세션이 만료되었습니다. 다시 로그인 해주세요.", logout : '1'});
     }
   } catch (err) {
     console.log(err);
@@ -60,14 +48,12 @@ router.post("/delete", async (req, res) => {
 router.post("/update", upload.single("imgFile"), async (req, res) => {
   try{    
     
-    //console.log("update "+ req.body._id);
     const _id = req.body.boardId;//board 게시물 id
     console.log(_id);
-    //console.log("session id : "+req.session._id);
-    //const board = await Board.find({ _id }).populate("writer");
-    //console.log("update board : "+ board[0]._id);
     const file = req.file;
 
+    //로그인 체크
+    if(req.session._id && req.session.myDIDLogin){
       if (file == undefined) {
         await Board.update(
           { _id: req.body.boardId },
@@ -92,8 +78,10 @@ router.post("/update", upload.single("imgFile"), async (req, res) => {
           }
         );
       }
-
       res.json({ message : "게시글이 수정되었습니다." });
+    }else{
+      res.json({message: "세션이 만료되었습니다. 다시 로그인 해주세요.", logout :"1"});
+    }
   } catch (err) {
     console.log(err);
     res.json({ message: false });
@@ -106,25 +94,29 @@ router.post("/write", upload.single("imgFile"), async (req, res) => {
     const file = req.file;
     console.log(file);
     let obj;
+    //로그인 체크
+    if(req.session._id && req.session.myDIDLogin){
+      if (file == undefined) {
+        obj = {
+          writer: req.session._id,
+          title: req.body.title,
+          content: req.body.content,
+        };
+      } else {
+        obj = {
+          writer: req.session._id,
+          title: req.body.title,
+          content: req.body.content,
+          imgPath: file.filename,
+        };
+      }
 
-    if (file == undefined) {
-      obj = {
-        writer: req.session._id,
-        title: req.body.title,
-        content: req.body.content,
-      };
-    } else {
-      obj = {
-        writer: req.session._id,
-        title: req.body.title,
-        content: req.body.content,
-        imgPath: file.filename,
-      };
+      const board = new Board(obj);
+      await board.save();
+      res.json({ message: "게시글이 업로드 되었습니다." });
+    }else{
+      res.json({message: "세션이 만료되었습니다. 다시 로그인 해주세요.", logout :"1"});
     }
-
-    const board = new Board(obj);
-    await board.save();
-    res.json({ message: "게시글이 업로드 되었습니다." });
   } catch (err) {
     console.log(err);
     res.json({ message: false });
@@ -133,17 +125,17 @@ router.post("/write", upload.single("imgFile"), async (req, res) => {
 
 router.post("/getBoardList", async (req, res) => {
   try {
-    const board = await Board.find({}, null, {
-      sort: { createdAt: -1 },
-    }).populate("writer");
-    console.log(board);
+    //로그인 체크
+    if(req.session._id && req.session.myDIDLogin){
+      const board = await Board.find({}, null, {
+        sort: { createdAt: -1 },
+      }).populate("writer");
+      console.log(board);
 
-    /*   const board = await Board.find(
-      { writer: _id }, null, {
-      sort: { createdAt: -1 },
-    } 
-    ); */
-    res.json({ list: board });
+      res.json({ list: board });
+    }else{
+      res.json({message: "세션이 만료되었습니다. 다시 로그인 해주세요.", logout :"1"});
+    }
   } catch (err) {
     console.log(err);
     res.json({ message: false });
@@ -152,15 +144,15 @@ router.post("/getBoardList", async (req, res) => {
 
 router.post("/detail", async (req, res) => {
   try {
-    const _id = req.body._id;
-    const board = await Board.find({ _id }).populate("writer");
-    const comment = await Comment.find({board_id: _id}).sort({ createdAt: -1 }).populate("writer");
-    //console.log("comment : "+ comment);
-    //console.log("board id : "+ board[0]._id);
-    //console.log("board writer name : "+ comment[0].writer);
-
-    res.json({ board, comment });
-    //console.log(comment[0].writer);
+    //로그인 체크
+    if(req.session._id && req.session.myDIDLogin){
+      const _id = req.body._id;
+      const board = await Board.find({ _id }).populate("writer");
+      const comment = await Comment.find({board_id: _id}).sort({ createdAt: -1 }).populate("writer");
+      res.json({ board, comment });
+    }else{
+      res.json({message: "세션이 만료되었습니다. 다시 로그인 해주세요.", logout :"1"});
+    }
   } catch (err) {
     console.log(err);
     res.json({ message: false });

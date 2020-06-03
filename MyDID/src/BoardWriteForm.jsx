@@ -21,8 +21,6 @@ function BoardWriteForm(props){
     setContentDataCallback();
   },[setContentDataCallback]);
 
-
-
   const writeBoard = () => {
     let url;
     const imgExp = /([^\s]+(?=\.(jpg|gif|png|JPG|GIF|PNG))\.\2)/;
@@ -66,12 +64,16 @@ function BoardWriteForm(props){
       .post(url, formData)
       //정상 수행
       .then(returnData => {
-        console.log(returnData.data);
-        if (returnData.data.message) {
-          alert(returnData.data.message);
-          window.location.href = "/";
-        } else {
-          alert("글쓰기 실패");
+        if(returnData.data.logout){
+          logout();
+          }else{
+          console.log(returnData.data);
+          if (returnData.data.message) {
+            alert(returnData.data.message);
+            window.location.href = "/";
+          } else {
+            alert("글쓰기 실패");
+          }
         }
       })
       //에러
@@ -80,11 +82,17 @@ function BoardWriteForm(props){
       });
   };
 
-/*   const onEditorChange = evt => {
-    this.setState({
-      data: evt.editor.getData()
-    });
-  }; */
+  function logout() {
+    axios
+      .get(process.env.REACT_APP_URL+"/member/logout", { headers })
+      .then((returnData) => {
+        if (returnData.data.message) {
+          sessionStorage.clear();
+          alert("로그아웃 되었습니다!");
+          window.location.href = "/";
+        }
+      });
+  }
 
   const divStyle = {
       margin: 50

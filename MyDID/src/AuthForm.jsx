@@ -34,13 +34,15 @@ function AuthForm(){
       headers
     };
 
-    axios
+    
+     axios
       .post(process.env.REACT_APP_URL+"/auth/registersignin", send_param)
       .then(returnData =>{
         //인증등록이 되어있을 경우 MyDID 인증 성공
         if(returnData.data.returnCode === "1"){
           setReturnCode(returnData.data.returnCode);
           sessionStorage.setItem('auth', "2");
+          alert('생체인증이 완료되었습니다! 인터넷 실명제 게시판에서 당신의 소신을 밝혀주세요.');
           window.location.reload();
         //Timeout
         }else if(returnData.data.returnCode === "2"){
@@ -50,8 +52,13 @@ function AuthForm(){
         //인증 등록이 되어있지 않은 경우
         }else if(returnData.data.returnCode === "0"){
           setReturnCode(returnData.data.returnCode);
+        //생체 인증이 실패했을 경우
+        }else if(returnData.data.returnCode === "3"){
+          setReturnCode(returnData.data.returnCode);
+          alert(returnData.data.message);
         //기타 오류 발생시
         }else{
+          alert('서버 오류가 발생했습니다. 다시 로그인 해주세요.');
           logoutSession();
         }
       })
@@ -60,7 +67,7 @@ function AuthForm(){
       // console.log(err);
       logoutSession();
       window.location.reload();
-    });
+    }); 
   }
 
   const imageStyle = {
@@ -79,7 +86,7 @@ function AuthForm(){
   }
 
   //MyDID 등록이 되어있지 않을 경우
-  if(returnCode === undefined){
+  if(returnCode === '0' || returnCode === '3'){
     return (
       <>
         <h1 style={imageStyle}>MyDID 비인증 회원입니다.</h1>
@@ -99,8 +106,8 @@ function AuthForm(){
         <div style={imageStyle}>
           <Image style={imageSize} src={dataUrl}/><br/>
           <h3 style={imageStyle}>스마트폰 QR코드를 통해 MyDID 웹사이트에서 생체인증 절차를 진행해주시기 바랍니다.</h3>
+          <h3 style={imageStyle}>생체인증 절차를 진행한 이후에도 1~2분간 반응이 없을 경우 '재인증 요청' 버튼을 눌러주세요.</h3>
           <Button variant="secondary" style={buttonStyle} onClick={loginMyDID}>재인증 요청</Button>
-          <h3>생체인증 절차를 진행한 이후에도 1~2분간 반응이 없을 경우 '재인증 요청' 버튼을 눌러주세요.</h3>
         </div>
       </>
     )

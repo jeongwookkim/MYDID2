@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Table } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import axios from "axios";
@@ -50,25 +50,21 @@ function BoardRow(props) {
 function BoardForm(props) {
   const [boardList, setBoardList] = useState();
 
-  useEffect(() => {
-    getBoardList();
-  }, []);
-
-  const getBoardList = () => {
+  const getBoardList = useCallback(() => {
     const send_param = {
       headers,
-
       _id: sessionStorage.getItem('login_id'),
       email:sessionStorage.getItem('login_email')
-
     };
 
     axios
       .post(process.env.REACT_APP_URL+"/board/getBoardList", send_param)
       .then((returnData) => {
+        if(returnData.data.logout){
+          logout();
+        }else{
         if (returnData.data.list.length > 0) {
           //console.log(returnData.data.list.login_email);
-          console.log(returnData.data.list);
           const boards = returnData.data.list;
           const boardContents = boards.map((item) => (
             <BoardRow
@@ -84,19 +80,36 @@ function BoardForm(props) {
           // console.log(boardList);
           setBoardList(boardContents);
         } else {
-          const boardList = (
-            <tr>
-              <td colSpan="3">작성한 게시글이 존재하지 않습니다.</td>
-            </tr>
-          );
-          setBoardList(boardList);
-          // window.location.reload();
+            const boardList = (
+              <tr>
+                <td colSpan="3">작성한 게시글이 존재하지 않습니다.</td>
+              </tr>
+            );
+            setBoardList(boardList);
+            // window.location.reload();
+          }
         }
       })
       .catch((err) => {
         console.log(err);
       });
-  };
+  },[]);
+
+  useEffect(() => {
+    getBoardList();
+  }, [getBoardList]);
+
+  function logout() {
+    axios
+      .get(process.env.REACT_APP_URL+"/member/logout", { headers })
+      .then((returnData) => {
+        if (returnData.data.message) {
+          sessionStorage.clear();
+          alert("로그아웃 되었습니다!");
+          window.location.href = "/";
+        }
+      });
+  }
 
   const divStyle = {
     margin: 50,

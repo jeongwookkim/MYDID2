@@ -1,10 +1,10 @@
 import React from "react";
+import MypageForm from "./MypageForm";
 import LoginForm from "./LoginForm";
 import BoardForm from "./BoardForm";
 import AuthForm from "./AuthForm";
 import BoardWriteForm from "./BoardWriteForm";
 import BoardDetail from "./BoardDetail";
-import MypageForm from "./MypageForm";
 import { Route } from "react-router-dom";
 
 function Body() {
