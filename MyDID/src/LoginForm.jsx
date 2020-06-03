@@ -21,81 +21,77 @@ function LoginForm() {
     // console.log(recaptchaToken, "<= your recaptcha token");
   };
   const join = () => {
-     const regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+    const regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
 
-  const regExp2 = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,16}$/;
+    const regExp2 = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,16}$/;
 
-  if (joinEmail.current.value === "" || joinEmail.current.value === undefined) {
+    if (
+      joinEmail.current.value === "" ||
+      joinEmail.current.value === undefined
+    ) {
+      alert("이메일 주소를 입력해주세요.");
 
-   alert("이메일 주소를 입력해주세요.");
+      joinEmail.current.focus();
 
-   joinEmail.current.focus();
-
-   return;
-
-  } else if (
-
-   joinEmail.current.value.match(regExp) === null ||
-
-   joinEmail.current.value.match(regExp) === undefined
-
-  ) {
-
-   alert("이메일 형식에 맞게 입력해주세요.");
-
-   joinEmail.current.value = "";
-
-   joinEmail.current.focus();
-
-   return;
-
-  } else if (joinName.current.value === "" || joinName.current.value === undefined) {
-
-   alert("이름을 입력해주세요.");
-
-   joinName.current.focus();
-
-   return;
-
-  } else if (joinPw.current.value === "" || joinPw.current.value === undefined) {
-
-   alert("비밀번호를 입력해주세요.");
-
-   joinPw.current.focus();
-
-   return;
-
-  } else if (
-
-   joinPw.current.value.match(regExp2) === null ||
-
-   joinPw.current.value.match(regExp2) === undefined
-
-  ) {
-
-   alert("비밀번호를 숫자와 문자, 특수문자 포함 8~16자리로 입력해주세요.");
-
-   joinPw.current.value = "";
-
-   joinPw.current.focus();
-
-   return;
-
-  } else if(phoneNumber.current.value === null || phoneNumber.current.value ===  undefined){
-      alert('휴대전화 번호를 입력해주세요.');
       return;
-  } 
+    } else if (
+      joinEmail.current.value.match(regExp) === null ||
+      joinEmail.current.value.match(regExp) === undefined
+    ) {
+      alert("이메일 형식에 맞게 입력해주세요.");
+
+      joinEmail.current.value = "";
+
+      joinEmail.current.focus();
+
+      return;
+    } else if (
+      joinName.current.value === "" ||
+      joinName.current.value === undefined
+    ) {
+      alert("이름을 입력해주세요.");
+
+      joinName.current.focus();
+
+      return;
+    } else if (
+      joinPw.current.value === "" ||
+      joinPw.current.value === undefined
+    ) {
+      alert("비밀번호를 입력해주세요.");
+
+      joinPw.current.focus();
+
+      return;
+    } else if (
+      joinPw.current.value.match(regExp2) === null ||
+      joinPw.current.value.match(regExp2) === undefined
+    ) {
+      alert("비밀번호를 숫자와 문자, 특수문자 포함 8~16자리로 입력해주세요.");
+
+      joinPw.current.value = "";
+
+      joinPw.current.focus();
+
+      return;
+    } else if (
+      phoneNumber.current.value === null ||
+      phoneNumber.current.value === undefined
+    ) {
+      alert("휴대전화 번호를 입력해주세요.");
+      return;
+    }
 
     const send_param = {
       headers,
       email: joinEmail.current.value,
       name: joinName.current.value,
       password: joinPw.current.value,
-      phoneNumber: phoneNumber.current.value
+      phoneNumber: phoneNumber.current.value,
     };
 
     axios
-      .post(process.env.REACT_APP_URL+"/member/join", send_param)
+      .post(process.env.REACT_APP_URL + "/member/join", send_param)
       //정상 수행
       .then((returnData) => {
         if (returnData.data.message) {
@@ -149,16 +145,16 @@ function LoginForm() {
     };
 
     axios
-      .post(process.env.REACT_APP_URL+"/member/login", send_param)
+      .post(process.env.REACT_APP_URL + "/member/login", send_param)
 
       //정상 수행
       .then((returnData) => {
         console.log(returnData);
         if (returnData.data._id) {
           // console.log("login_id:" + returnData.data._id);
-          sessionStorage.setItem('login_id', returnData.data._id);
-          sessionStorage.setItem('login_email', returnData.data.email);
-          sessionStorage.setItem('auth', returnData.data.auth);
+          sessionStorage.setItem("login_id", returnData.data._id);
+          sessionStorage.setItem("login_email", returnData.data.email);
+          sessionStorage.setItem("auth", returnData.data.auth);
           alert(returnData.data.message);
           window.location.reload();
         } else {
@@ -176,10 +172,10 @@ function LoginForm() {
     justifyContent: "space-around",
     backgroundImage: "url(/img/lock3.jpg)",
     backgroundSize: "100% 100%",
-    backgroundPosition: "center",
+    //backgroundPosition: "center",
     backgroundRepeat: "no-repeat",
     position: "relative",
-    height: "45vw",
+    height: "55vw",
   };
   const buttonStyle = {
     marginTop: 10,
@@ -187,7 +183,7 @@ function LoginForm() {
   const ImgStyle3 = {
     backgroundImage: "url(/img/1233.jpg)",
     backgroundSize: "100% 100%",
-    backgroundPosition: "center",
+    //backgroundPosition: "center",
     backgroundRepeat: "no-repeat",
     position: "relative",
     height: "45vw",
@@ -195,7 +191,7 @@ function LoginForm() {
   const ImgStyle2 = {
     backgroundImage: "url(/img/12342.jpg)",
     backgroundSize: "100% 100%",
-    backgroundPosition: "center",
+    //backgroundPosition: "center",
     backgroundRepeat: "no-repeat",
     position: "relative",
     height: "45vw",
@@ -206,17 +202,19 @@ function LoginForm() {
     height: "62px",
   }; */
   const border = {
-    marginTop: 20,
+    //marginTop: 20,
   };
   const padding = {
     padding: 20,
   };
   return (
     <>
-            
       <div style={divStyle}>
-        <Jumbotron style={{ opacity: 0.9 }} className="float-right my-4 mr-5">
-          <Form>
+        <Jumbotron
+          style={{ opacity: 0.9, height: 500 }}
+          className="float-right my-4 mr-5"
+        >
+          <Form controlId="joinForm">
             <h3>회원가입</h3>
 
             <Form.Label>Email address</Form.Label>
@@ -258,7 +256,6 @@ function LoginForm() {
               ref={joinPw}
               placeholder="Password"
             />
-
             <Form.Label>phone number</Form.Label>
 
             <Form.Control
@@ -280,8 +277,11 @@ function LoginForm() {
           </Form>
         </Jumbotron>
 
-        <Jumbotron style={{ opacity: 0.9 }} className="float-right my-4 mr-5">
-          <Form>
+        <Jumbotron
+          style={{ opacity: 0.9, height: 500 }}
+          className="float-right my-4 mr-5"
+        >
+          <Form controlId="loginForm">
             <h3>로그인</h3>
 
             <Form.Label>Email address</Form.Label>
@@ -339,63 +339,6 @@ function LoginForm() {
           </div>
         </div>
       </section>
-      {/* <section className="page-section" id="services">
-        <div className="container" style={border}>
-          <h2 className="text-center mt-0">At Your Service</h2>
-          <hr className="divider my-4" />
-          <div className="row">
-            <div className="col-lg-3 col-md-6 text-center">
-              <div className="mt-5">
-                <i className="fas fa-4x fa-gem text-primary mb-4"></i>
-                <Image style={icon} src="/img/videoconference.png"></Image>
-                <h3 className="h4 mb-2" style={padding}>
-                  화상회의
-                </h3>
-                <p className="text-muted mb-0">
-                  간편하게<br></br> 화상회의를 할수있습니다!
-                </p>
-              </div>
-            </div>
-            <div className="col-lg-3 col-md-6 text-center">
-              <div className="mt-5">
-                <i className="fas fa-4x fa-laptop-code text-primary mb-4"></i>
-                <Image style={icon} src="/img/chat.png"></Image>
-                <h3 className="h4 mb-2" style={padding}>
-                  채팅
-                </h3>
-                <p className="text-muted mb-0">
-                  회의와 함께 <br></br>채팅이 가능합니다!
-                </p>
-              </div>
-            </div>
-            <div className="col-lg-3 col-md-6 text-center">
-              <div className="mt-5">
-                <i className="fas fa-4x fa-globe text-primary mb-4"></i>
-                <Image style={icon} src="/img/result.png"></Image>
-                <h3 className="h4 mb-2" style={padding}>
-                  문서교환
-                </h3>
-                <p className="text-muted mb-0">
-                  게시판
-                </p>
-              </div>
-            </div>
-            <div className="col-lg-3 col-md-6 text-center">
-              <div className="mt-5">
-                <i className="fas fa-4x fa-heart text-primary mb-4"></i>
-                <Image style={icon} src="/img/free.png"></Image>
-                <h3 className="h4 mb-2" style={padding}>
-                  무료 사용
-                </h3>
-                <p className="text-muted mb-0">
-                  어려운 시기 우리 MOA는 <br></br>여러분에게 화상회의를
-                  <br></br>무료로 제공합니다.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section> */}
       <Jumbotron style={ImgStyle2}></Jumbotron>
       <section className="page-section" id="services">
         <div className="container" style={border}>
@@ -467,33 +410,6 @@ function LoginForm() {
               >
                 <img className="img-fluid" src="/img/q3.jpg" alt="" />
                 <div className="portfolio-box-caption"></div>
-              </a>
-            </div>
-            <div className="col-lg-4 col-sm-6">
-              <a
-                className="portfolio-box"
-                href="assets/img/portfolio/fullsize/4.jpg"
-              >
-                <img className="img-fluid" src="/img/q4.jpg" alt="" />
-                <div className="portfolio-box-caption"></div>
-              </a>
-            </div>
-            <div className="col-lg-4 col-sm-6">
-              <a
-                className="portfolio-box"
-                href="assets/img/portfolio/fullsize/5.jpg"
-              >
-                <img className="img-fluid" src="/img/q7.jpg" alt="" />
-                <div className="portfolio-box-caption"></div>
-              </a>
-            </div>
-            <div className="col-lg-4 col-sm-6">
-              <a
-                className="portfolio-box"
-                href="assets/img/portfolio/fullsize/6.jpg"
-              >
-                <img className="img-fluid" src="/img/q9.jpg" alt="" />
-                <div className="portfolio-box-caption p-3"></div>
               </a>
             </div>
           </div>
