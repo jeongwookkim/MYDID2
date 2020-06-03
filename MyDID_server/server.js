@@ -47,6 +47,25 @@ app.use(
   })
 );
 
+app.post('/captcha', function(req, res) {
+  if(req.body['g-recaptcha-response'] === undefined || req.body['g-recaptcha-response'] === '' || req.body['g-recaptcha-response'] === null)
+  {
+    return res.json({"responseError" : "something goes to wrong"});
+  }
+  const secretKey = "6LeD4f8UAAAAAMyDtD-f1aqByo7xxx4FhBgmumi2";
+ 
+  const verificationURL = "https://www.google.com/recaptcha/api/siteverify?secret=" + secretKey + "&amp;response=" + req.body['g-recaptcha-response'] + "&amp;remoteip=" + req.connection.remoteAddress;
+ 
+  request(verificationURL,function(error,response,body) {
+    body = JSON.parse(body);
+ 
+    if(body.success !== undefined && !body.success) {
+      return res.json({"responseError" : "Failed captcha verification"});
+    }
+    res.json({"responseSuccess" : "Success"});
+  });
+});
+
 app.use(cors(corsOptions));
 
 app.use(express.json());
