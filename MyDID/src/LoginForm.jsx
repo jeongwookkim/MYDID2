@@ -211,7 +211,7 @@ function LoginForm() {
     <>
       <div style={divStyle}>
         <Jumbotron
-          style={{ opacity: 0.9, height: 500 }}
+          style={{ opacity: 0.9, height: 550 }}
           className="float-right my-4 mr-5"
         >
           <Form controlId="joinForm">
