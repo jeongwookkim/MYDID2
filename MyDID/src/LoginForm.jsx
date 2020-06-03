@@ -153,7 +153,8 @@ function LoginForm() {
 
       //정상 수행
       .then((returnData) => {
-        if (returnData.data.message) {
+        console.log(returnData);
+        if (returnData.data._id) {
           // console.log("login_id:" + returnData.data._id);
           sessionStorage.setItem('login_id', returnData.data._id);
           sessionStorage.setItem('login_email', returnData.data.email);
@@ -162,6 +163,7 @@ function LoginForm() {
           window.location.reload();
         } else {
           alert(returnData.data.message);
+          window.location.reload();
         }
       })
       //에러

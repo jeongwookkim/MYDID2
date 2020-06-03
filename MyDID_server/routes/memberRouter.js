@@ -83,8 +83,6 @@ router.post("/login", async (req, res) => {
         //console.log("1"+user);
         if (user) {
           //아이디가 존재할 경우 이메일과 패스워드가 일치하는 회원이 있는지 확인
-          //console.log(req.body.password);
-          //console.log(user.salt);
           crypto.pbkdf2(
             req.body.password,
             user.salt,
@@ -117,12 +115,12 @@ router.post("/login", async (req, res) => {
                   req.session.auth = user2.auth;
                   req.session._id = user2._id;
                   req.session.phoneNumber = user2.phoneNumber;
+                  console.log(user2);
                   res.json({
                     message: "로그인 되었습니다!",
                     _id: user2._id,
                     email: user2.email,
                     auth: user2.auth,
-                    phoneNumber: user2.phoneNumber
                   });
                 } else {
                   //없으면 로그인 실패횟수 추가

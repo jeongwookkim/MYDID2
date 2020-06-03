@@ -7,7 +7,6 @@ const headers = { withCredentials: true };
 
 const boardStyle={
   margin: 5,
-  //backgroundPosition: "center",
 }
 
 //게시글 삭제 컴포넌트
@@ -92,18 +91,94 @@ function BoardDetail(props) {
   const [flag, setFlag] = useState(true);
   const commentTitle = useRef();
 
-  const getCommentList = useCallback(() => {
+  function logout() {
     axios
-      .post(process.env.REACT_APP_URL+"/board/detail", "")
+      .get(process.env.REACT_APP_URL+"/member/logout", { headers })
+      .then((returnData) => {
+        if (returnData.data.message) {
+          sessionStorage.clear();
+          alert("로그아웃 되었습니다!");
+          window.location.href = "/";
+        }
+      });
+  }
+
+  const getCommentList = useCallback(() => {
+    const send_param = {
+      headers,
+      _id: props.location.query._id,
+    };
+    axios
+      .post(process.env.REACT_APP_URL+"/board/detail", send_param)
       .then(async (returnData) => {
-        if (returnData.data.comment.length > 0) {
-          setComments(returnData.data.comment);
+        if(returnData.data.logout){
+            logout();
+        }else{
+          if (returnData.data.comment.length > 0) {
+            setComments(returnData.data.comment);
+          }
         }
       })
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [props.location.query._id]);
+
+  //게시글 수정
+  const updateBoard  = useCallback((_id) => {
+    console.log("update : "+_id);
+    const send_param = {
+      headers,
+      _id,
+    };
+
+    if (window.confirm("수정 하시겠습니까?")) {
+      axios
+        .post(process.env.REACT_APP_URL+"/board/update", send_param)
+        //정상 수행
+        .then((returnData) => {
+          if(returnData.data.logout){
+            logout();
+          }else{
+            alert(returnData.data.data);
+          }
+        })
+        //에러
+        .catch((err) => {
+          console.log(err);
+          alert("글 수정 실패");
+        });
+    }
+  },[]);
+
+  //게시글 삭제
+  const deleteBoard = useCallback((_id, writer) => {
+
+    const send_param = {
+      headers,
+      _id,
+      writer,
+    };
+
+    if (window.confirm("정말 삭제하시겠습니까?")) {
+      axios
+        .post(process.env.REACT_APP_URL+"/board/delete", send_param)
+        //정상 수행
+        .then((returnData) => {
+          if(returnData.data.logout){
+            logout();
+          }else{
+          alert(returnData.data.message);
+          window.location.href = "/";
+          }
+        })
+        //에러
+        .catch((err) => {
+          console.log(err);
+          alert("글 삭제 실패");
+        });
+    }
+  },[]);
 
   //게시글 상세정보 가져오기
   const getDetail = useCallback(() => {
@@ -111,10 +186,7 @@ function BoardDetail(props) {
       headers,
       _id: props.location.query._id,
     };
-    // const marginBottom = {
-    //   marginBottom: 5,
-    //   width: 90,
-    // };
+
     const imageStyle = {
       textAlign : "center"
     }
@@ -123,59 +195,63 @@ function BoardDetail(props) {
       .post(process.env.REACT_APP_URL+"/board/detail", send_param)
       //정상 수행
       .then(async (returnData) => {
-        if (returnData.data.board[0]) {
-          if (returnData.data.comment.length > 0) {
-            console.log(returnData.data.comment.length);
-            const comment = returnData.data.comment;
-            await setComments(comment);
-          }
-          const board = (
-            <div>
-              {returnData.data.board[0].imgPath !== undefined? (
-              <div style={imageStyle}>
-              <Image src={process.env.REACT_APP_URL + "/upload/" +returnData.data.board[0].imgPath} fluid /> 
+        if(returnData.data.logout){
+          logout();
+        }else{
+          if (returnData.data.board[0]) {
+            if (returnData.data.comment.length > 0) {
+              console.log(returnData.data.comment.length);
+              const comment = returnData.data.comment;
+              await setComments(comment);
+            }
+            const board = (
+              <div>
+                {returnData.data.board[0].imgPath !== undefined? (
+                <div style={imageStyle}>
+                <Image src={process.env.REACT_APP_URL + "/upload/" +returnData.data.board[0].imgPath} fluid /> 
+                </div>
+                ): ""}
+                <Table striped bordered hover>
+                  <thead>
+                    <tr>
+                      <th>{returnData.data.board[0].title}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>{returnData.data.board[0].content}</td>
+                    </tr>
+                  {/* //////////////////////삼항연산자//////////////////////////// */}
+                  {props.location.query.writer === sessionStorage.getItem('login_id') ? (
+                    <RemoveModifyBtn
+                      _id={props.location.query._id}
+                      title={returnData.data.board[0].title}
+                      content = {returnData.data.board[0].content}
+                      updateBoard={updateBoard.bind(
+                        null,
+                        props.location.query._id, props.location.query.writer
+                      )}
+                      deleteBoard={deleteBoard.bind(null, props.location.query._id, props.location.query.writer)}
+                    />
+                  ) : (
+                    <></>
+                  )}
+                  </tbody>
+                </Table>
               </div>
-              ): ""}
-              <Table striped bordered hover>
-                <thead>
-                  <tr>
-                    <th>{returnData.data.board[0].title}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>{returnData.data.board[0].content}</td>
-                  </tr>
-                {/* //////////////////////삼항연산자//////////////////////////// */}
-                {props.location.query.writer === sessionStorage.getItem('login_id') ? (
-                  <RemoveModifyBtn
-                    _id={props.location.query._id}
-                    title={returnData.data.board[0].title}
-                    content = {returnData.data.board[0].content}
-                    updateBoard={updateBoard.bind(
-                      null,
-                      props.location.query._id, props.location.query.writer
-                    )}
-                    deleteBoard={deleteBoard.bind(null, props.location.query._id, props.location.query.writer)}
-                  />
-                ) : (
-                  ""
-                )}
-                </tbody>
-              </Table>
-            </div>
-          );
-          await setBoard(board);
-          setFlag(false);
-        } else {
-          alert("글 상세 조회 실패");
+            );
+            await setBoard(board);
+            setFlag(false);
+          } else {
+            alert("글 상세 조회 실패");
+          }
         }
       })
       //에러
       .catch((err) => {
         console.log(err);
       });
-  }, [props.location.query, setComments]);
+  }, [props.location.query, setComments, updateBoard, deleteBoard]);
 
   //게시판 상세 세팅(초기 랜더링시)
   const setBoardDetail = useCallback(() => {
@@ -193,55 +269,6 @@ function BoardDetail(props) {
     }
   }, [flag, setBoardDetail]);
 
-  //게시글 수정
-  const updateBoard = (_id) => {
-    console.log("update : "+_id);
-    const send_param = {
-      headers,
-      _id,
-    };
-
-    if (window.confirm("수정 하시겠습니까?")) {
-      axios
-        .post(process.env.REACT_APP_URL+"/board/update", send_param)
-        //정상 수행
-        .then((returnData) => {
-          alert(returnData.data.data);
-        })
-        //에러
-        .catch((err) => {
-          console.log(err);
-          alert("글 수정 실패");
-        });
-    }
-  };
-
-  //게시글 삭제
-  const deleteBoard = (_id, writer) => {
-
-    //alert(writer);
-    const send_param = {
-      headers,
-      _id,
-      writer,
-    };
-
-    if (window.confirm("정말 삭제하시겠습니까?")) {
-      axios
-        .post(process.env.REACT_APP_URL+"/board/delete", send_param)
-        //정상 수행
-        .then((returnData) => {
-          alert(returnData.data.message);
-          window.location.href = "/";
-        })
-        //에러
-        .catch((err) => {
-          console.log(err);
-          alert("글 삭제 실패");
-        });
-    }
-  };
-
   //댓글 삭제
   const removeComment = useCallback(
     (_id) => {
@@ -252,12 +279,16 @@ function BoardDetail(props) {
       axios
         .post(process.env.REACT_APP_URL +"/comment/delete", send_param)
         .then((returnData) => {
-          alert(returnData.data.message);
-          setComments(returnData.data.comment);
-          if(returnData.data.refresh){
-            setComments(comments);
+          if(returnData.data.logout){
+            logout();
           }else{
-            setComments(comments.filter((comment) => comment._id !== _id));
+            alert(returnData.data.message);
+            setComments(returnData.data.comment);
+            if(returnData.data.refresh){
+              setComments(comments);
+            }else{
+              setComments(comments.filter((comment) => comment._id !== _id));
+            }
           }
         })
         .catch((err) => {
@@ -278,7 +309,11 @@ function BoardDetail(props) {
     };
     axios.post(process.env.REACT_APP_URL+"/comment/writecomment", send_param)
     .then((returnData)=>{
-      alert(returnData.data.message);
+      if(returnData.data.logout){
+        logout();
+      }else{
+        alert(returnData.data.message);
+      }
     })
 
     getCommentList();
