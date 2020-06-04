@@ -35,6 +35,6 @@ public class WebViewActivity extends AppCompatActivity {
 //        mWebSettings.setCacheMode(WebSettings.LOAD_NO_CACHE); // 브라우저 캐시 허용 여부
         mWebSettings.setDomStorageEnabled(true); // 로컬저장소 허용 여부
 
-        mWebView.loadUrl("http://www.xn--289a5d59ivvju3fprbhzwr3l.xn--hk3b17f.xn--3e0b707e:3000/#/"); // 웹뷰에 표시할 웹사이트 주소, 웹뷰 시작
+        mWebView.loadUrl("http://www.xn--289a5d59ivvju3fprbhzwr3l.xn--hk3b17f.xn--3e0b707e"); // 웹뷰에 표시할 웹사이트 주소, 웹뷰 시작
     }
 }

@@ -29,11 +29,14 @@ function AuthForm(){
   },[]);
 
   //MyDID 인증 확인 버튼 클릭시
-  const loginMyDID = ()=>{
+  const loginMyDID = (flag)=>{
     const send_param = {
       headers
     };
 
+    if(flag === '1'){
+      alert("인증 요청 되었습니다. MyDID 웹 or 앱에서 생체인증을 진행 해주세요.");
+    }
     
      axios
       .post(process.env.REACT_APP_URL+"/auth/registersignin", send_param)
@@ -83,6 +86,7 @@ function AuthForm(){
     width : 300,
     height : 100,
     marginBottom : 20,
+    fontSize : 30
   }
 
   //MyDID 등록이 되어있지 않을 경우
@@ -94,12 +98,12 @@ function AuthForm(){
           <Image style={imageSize} src={dataUrl} />
           <div style={imageStyle}>
             <h3>스마트폰 QR코드를 통해 MyDID 웹사이트에서 MyDID 등록 후 '인증 요청' 버튼을 눌러주세요.</h3><br/>
-            <Button variant="secondary" style={buttonStyle} onClick={loginMyDID}>인증 요청</Button>
+            <Button variant="secondary" style={buttonStyle} onClick={loginMyDID.bind(null, '1')}>인증 요청</Button>
           </div>
         </div>
       </>
     );
-  }else{
+  }else if(returnCode === '1'){
     return(
       <>
         <h1 style={imageStyle}>회원가입 시 휴대전화 번호로 MyDID 인증 요청 되었습니다.</h1>
@@ -107,8 +111,17 @@ function AuthForm(){
           <Image style={imageSize} src={dataUrl}/><br/>
           <h3 style={imageStyle}>스마트폰 QR코드를 통해 MyDID 웹사이트에서 생체인증 절차를 진행해주시기 바랍니다.</h3>
           <h3 style={imageStyle}>생체인증 절차를 진행한 이후에도 1~2분간 반응이 없을 경우 '재인증 요청' 버튼을 눌러주세요.</h3>
-          <Button variant="secondary" style={buttonStyle} onClick={loginMyDID}>재인증 요청</Button>
+          <Button variant="secondary" style={buttonStyle} onClick={loginMyDID.bind(null, '1')}>재인증 요청</Button>
         </div>
+      </>
+    )
+  }else{
+    return(
+      <>
+        <div style={imageStyle}>
+          <img className="img-fluid" src="/img/loading.gif" alt="" />
+        </div>
+        <h1 style={imageStyle}>Loading...</h1>
       </>
     )
   }
