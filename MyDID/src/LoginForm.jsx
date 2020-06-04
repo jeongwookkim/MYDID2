@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { Jumbotron, Form, Button } from "react-bootstrap";
 import { loadReCaptcha, ReCaptcha } from "react-recaptcha-v3";
 import axios from "axios";
+import "./style.css";
 axios.defaults.withCredentials = true;
 const headers = { withCredentials: true };
 
@@ -168,14 +169,14 @@ function LoginForm() {
       });
   };
   const divStyle = {
-    display: "flex",
-    justifyContent: "space-around",
+    // display: "flex",
+    // justifyContent: "space-around",
     backgroundImage: "url(/img/lock3.jpg)",
     backgroundSize: "100% 100%",
     //backgroundPosition: "center",
     backgroundRepeat: "no-repeat",
-    position: "relative",
-    height: "55vw",
+    // position: "relative",
+    // height: "55vw",
   };
   const buttonStyle = {
     marginTop: 10,
@@ -207,21 +208,40 @@ function LoginForm() {
   const padding = {
     padding: 20,
   };
+
+const loginContainerStyle = {
+  display: "grid",
+  // justifyContent: "space-evenly"
+  gridTemplateColumns: "1fr 1fr"
+  
+}
+
+const loginFormStyle = {
+  width: "20rem",
+  margin: "0 auto"
+}
+
+const signupFormStyle = {
+width: "20rem",
+  margin: "0 auto"
+
+}
+
+
   return (
     <>
       <div style={divStyle}>
-        <Jumbotron
-          style={{ opacity: 0.9, height: 550 }}
-          className="float-right my-4 mr-5"
-        >
-          <Form controlId="joinForm">
+
+        <div className="login-container" className="login-container">
+
+          <Form controlId="joinForm" className="signup-form">
             <h3>회원가입</h3>
 
             <Form.Label>Email address</Form.Label>
 
             <Form.Control
               type="email"
-              maxLength="100"
+              maxLength="80"
               ref={joinEmail}
               placeholder="Enter email"
             />
@@ -275,20 +295,16 @@ function LoginForm() {
               회원가입
             </Button>
           </Form>
-        </Jumbotron>
 
-        <Jumbotron
-          style={{ opacity: 0.9, height: 500 }}
-          className="float-right my-4 mr-5"
-        >
-          <Form controlId="loginForm">
+
+          <Form controlId="loginForm" className="login-form">
             <h3>로그인</h3>
 
             <Form.Label>Email address</Form.Label>
 
             <Form.Control
               type="email"
-              maxLength="100"
+              maxLength="80"
               ref={loginEmail}
               placeholder="Enter email"
             />
@@ -318,8 +334,11 @@ function LoginForm() {
               로그인
             </Button>
           </Form>
-        </Jumbotron>
+
+          </div>
+
       </div>
+      <div>
       <section className="page-section bg-secondary" id="about">
         <div className="container" style={padding}>
           <div className="row justify-content-center">
@@ -339,6 +358,7 @@ function LoginForm() {
           </div>
         </div>
       </section>
+      
       <Jumbotron style={ImgStyle2}></Jumbotron>
       <section className="page-section" id="services">
         <div className="container" style={border}>
@@ -443,6 +463,7 @@ function LoginForm() {
           <br></br>
         </div>
       </section>
+      </div>
       <footer className="bg-light py-5">
         <div className="container">
           <div className="small text-center text-muted">
@@ -450,6 +471,7 @@ function LoginForm() {
           </div>
         </div>
       </footer>
+      
     </>
   );
 }
