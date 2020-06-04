@@ -1,0 +1,2 @@
+.login-container{display:grid;grid-template-columns:1fr 1fr}@media only screen and (max-width:700px){.login-container{display:flex;flex-direction:column-reverse}}.login-form,.signup-form{width:20rem;margin:3rem auto;display:block}
+/*# sourceMappingURL=main.36578898.chunk.css.map */
